@@ -31,7 +31,7 @@ resource "aws_s3_bucket" "api_dandisets_bucket" {
 
 resource "aws_iam_user_policy" "api_dandisets_bucket" {
   user   = module.api.iam_user_id
-  name   = "dandi-publish-dandiset-bucket"
+  name   = "dandi-api-dandiset-bucket"
   policy = data.aws_iam_policy_document.api_dandisets_bucket.json
 }
 
