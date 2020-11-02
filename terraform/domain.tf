@@ -18,14 +18,6 @@ resource "aws_route53_record" "gui" {
   records = ["gui-dandiarchive-org.netlify.com"]
 }
 
-resource "aws_route53_record" "hub" {
-  zone_id = aws_route53_zone.dandi.zone_id
-  name    = "hub"
-  type    = "CNAME"
-  ttl     = "300"
-  records = ["a1a472c4d044548c68aabc9a18a45b4b-1023862478.us-east-2.elb.amazonaws.com"]
-}
-
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.dandi.zone_id
   name    = "www"
