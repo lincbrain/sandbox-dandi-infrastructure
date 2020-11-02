@@ -14,8 +14,8 @@ module "girder_server" {
   source  = "girder/girder/aws//modules/server"
   version = "0.7.0"
 
-  project_slug      = "dandi-girder"
-  ssh_public_key    = data.local_file.ssh_public_key.content
+  project_slug    = "dandi-girder"
+  ssh_public_key  = data.local_file.ssh_public_key.content
   ec2_volume_size = 100
 }
 
