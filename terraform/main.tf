@@ -1,6 +1,5 @@
 terraform {
   backend "remote" {
-    hostname     = "app.terraform.io"
     organization = "dandi"
 
     workspaces {
