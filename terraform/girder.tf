@@ -12,7 +12,7 @@ resource "aws_route53_record" "girder" {
 
 module "girder_server" {
   source  = "girder/girder/aws//modules/server"
-  version = "0.7.0"
+  version = "0.8.0"
 
   project_slug    = "dandi-girder"
   ssh_public_key  = data.local_file.ssh_public_key.content
@@ -21,7 +21,7 @@ module "girder_server" {
 
 module "girder_smtp" {
   source  = "girder/girder/aws//modules/smtp"
-  version = "0.7.0"
+  version = "0.8.0"
 
   project_slug    = "dandi-girder"
   route53_zone_id = aws_route53_zone.dandi.zone_id
