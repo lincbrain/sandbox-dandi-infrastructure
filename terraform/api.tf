@@ -11,7 +11,8 @@ module "api" {
   route53_zone_id  = aws_route53_zone.dandi.zone_id
   subdomain_name   = "api"
 
-  heroku_papertrail_plan = "fixa"
+  heroku_worker_dyno_size = "standard"
+  heroku_papertrail_plan  = "fixa"
 
   django_cors_origin_whitelist       = ["https://gui.dandiarchive.org", "https://gui-beta-dandiarchive-org.netlify.app"]
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
