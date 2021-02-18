@@ -11,6 +11,7 @@ module "api" {
   route53_zone_id  = aws_route53_zone.dandi.zone_id
   subdomain_name   = "api"
 
+  heroku_web_dyno_size    = "standard-2x"
   heroku_worker_dyno_size = "standard-2x"
   heroku_papertrail_plan  = "fixa"
 
