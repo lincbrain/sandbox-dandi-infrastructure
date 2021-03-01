@@ -22,6 +22,7 @@ module "api" {
 
   additional_django_vars = {
     DJANGO_DANDI_DANDISETS_BUCKET_NAME = aws_s3_bucket.api_dandisets_bucket.id
+    DJANGO_DANDI_SCHEMA_VERSION        = "1.0.0-rc1"
     DJANGO_DANDI_GIRDER_API_URL        = "https://girder.dandiarchive.org/api/v1"
     DJANGO_SENTRY_DSN                  = "https://4bd48b5174ea4b42a130e63ebe3d60d2@o308436.ingest.sentry.io/5266078"
   }
