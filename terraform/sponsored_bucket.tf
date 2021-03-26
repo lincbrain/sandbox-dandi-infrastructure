@@ -120,7 +120,7 @@ data "aws_iam_policy_document" "sponsored_bucket" {
 
 resource "aws_iam_policy" "sponsored_writers" {
   provider = aws.sponsored
-  
+
   name        = "writers"
   description = "Allows writing and deleting objects"
   policy      = data.aws_iam_policy_document.sponsored_writers.json
@@ -129,7 +129,7 @@ resource "aws_iam_policy" "sponsored_writers" {
 data "aws_iam_policy_document" "sponsored_writers" {
   version = "2012-10-17"
   statement {
-    sid     = "VisualEditor0"
+    sid = "VisualEditor0"
     actions = [
       "s3:DeleteObjectTagging",
       "s3:ListBucketByTags",
@@ -170,7 +170,7 @@ data "aws_iam_policy_document" "sponsored_dandi_writer" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         "arn:aws:iam::278212569472:root",
       ]
@@ -200,13 +200,13 @@ resource "aws_iam_group_policy_attachment" "sponsored_writers_attach" {
 
 resource "aws_iam_user" "sponsored_dandi_write_bot" {
   provider = aws.sponsored
-  
+
   name = "dandi-write-bot"
 }
 
 resource "aws_iam_user_group_membership" "sponsored_dandi_write_bot_membership" {
   provider = aws.sponsored
-  
+
   user   = aws_iam_user.sponsored_dandi_write_bot.name
   groups = [aws_iam_group.sponsored_writers.name]
 }
