@@ -61,6 +61,7 @@ data "aws_iam_policy_document" "api_dandisets_bucket" {
 
 resource "aws_iam_role" "write_public_dataset" {
   name               = "write-public-dataset"
+  description        = "Allows EC2 instances to call AWS services on your behalf."
   assume_role_policy = data.aws_iam_policy_document.write_public_dataset.json
   inline_policy {
     name = "write-public-dataset"
