@@ -58,3 +58,64 @@ data "aws_iam_policy_document" "api_dandisets_bucket" {
     ]
   }
 }
+
+resource "aws_iam_role" "write_public_dataset" {
+  name               = "write-public-dataset"
+  assume_role_policy = data.aws_iam_policy_document.write_public_dataset.json
+  inline_policy {
+    name = "write-public-dataset"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [{
+        Action   = "sts:AssumeRole"
+        Effect   = "Allow"
+        Resource = aws_iam_role.sponsored_dandi_writer.arn
+      }]
+    })
+  }
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+  ]
+}
+
+data "aws_iam_policy_document" "write_public_dataset" {
+  version = "2012-10-17"
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "dandi_girder" {
+  name               = "dandi-girder"
+  assume_role_policy = data.aws_iam_policy_document.dandi_girder.json
+  inline_policy {
+    name = "write-public-dataset"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [{
+        Action   = "sts:AssumeRole"
+        Effect   = "Allow"
+        Resource = aws_iam_role.sponsored_dandi_writer.arn
+      }]
+    })
+  }
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+  ]
+}
+
+data "aws_iam_policy_document" "dandi_girder" {
+  version = "2012-10-17"
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
