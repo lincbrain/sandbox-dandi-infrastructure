@@ -116,7 +116,7 @@ data "aws_iam_policy_document" "dandi_girder" {
     }
     principals {
       type        = "AWS"
-      identifiers = [module.api.iam_user_id]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.project_account.account_id}:user/${module.api.iam_user_id}"]
     }
   }
 }
