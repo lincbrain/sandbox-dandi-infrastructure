@@ -64,15 +64,8 @@ resource "aws_iam_role" "write_public_dataset" {
   description        = "Allows EC2 instances to call AWS services on your behalf."
   assume_role_policy = data.aws_iam_policy_document.write_public_dataset.json
   inline_policy {
-    name = "write-public-dataset"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [{
-        Action   = "sts:AssumeRole"
-        Effect   = "Allow"
-        Resource = aws_iam_role.sponsored_dandi_writer.arn
-      }]
-    })
+    name   = "write-public-dataset"
+    policy = data.aws_iam_policy_document.write_public_dataset_inline.json
   }
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
@@ -90,19 +83,22 @@ data "aws_iam_policy_document" "write_public_dataset" {
   }
 }
 
+data "aws_iam_policy_document" "write_public_dataset_inline" {
+  version = "2012-10-17"
+  statement {
+    actions   = ["sts:AssumeRole"]
+    effect    = "Allow"
+    resources = [aws_iam_role.sponsored_dandi_writer.arn]
+  }
+}
+
+
 resource "aws_iam_role" "dandi_girder" {
   name               = "dandi-girder"
   assume_role_policy = data.aws_iam_policy_document.dandi_girder.json
   inline_policy {
-    name = "write-public-dataset"
-    policy = jsonencode({
-      Version = "2012-10-17"
-      Statement = [{
-        Action   = "sts:AssumeRole"
-        Effect   = "Allow"
-        Resource = aws_iam_role.sponsored_dandi_writer.arn
-      }]
-    })
+    name   = "write-public-dataset"
+    policy = data.aws_iam_policy_document.write_public_dataset_inline.json
   }
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
