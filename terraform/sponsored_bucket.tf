@@ -172,7 +172,7 @@ data "aws_iam_policy_document" "sponsored_dandi_writer" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::278212569472:root",
+        "arn:aws:iam::${data.aws_caller_identity.project_account.account_id}:root",
       ]
     }
   }
