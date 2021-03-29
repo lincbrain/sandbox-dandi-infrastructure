@@ -21,7 +21,7 @@ module "api" {
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
 
   additional_django_vars = {
-    DJANGO_DANDI_DANDISETS_BUCKET_NAME = aws_s3_bucket.api_dandisets_bucket.id
+    DJANGO_DANDI_DANDISETS_BUCKET_NAME = aws_s3_bucket.sponsored_bucket.id
     DJANGO_DANDI_SCHEMA_VERSION        = "0.1.0"
     DJANGO_DANDI_GIRDER_API_URL        = "https://girder.dandiarchive.org/api/v1"
     DJANGO_DANDI_DOI_API_URL           = "https://api.test.datacite.org/dois"
@@ -113,6 +113,10 @@ data "aws_iam_policy_document" "dandi_girder" {
     principals {
       type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
+    }
+    principals {
+      type        = "AWS"
+      identifiers = [module.api.iam_user_id]
     }
   }
 }
