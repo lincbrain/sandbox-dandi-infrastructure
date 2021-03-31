@@ -10,7 +10,7 @@ TODO
   * "Identity and Access Management (IAM)"
   * "Users"
   * "Add user"
-  * "Set user details" 
+  * "Set user details"
     * "User name": `dandi-infrastructure-bot`
   * "Select AWS access type"
     * "Access type": "Programmatic access"
@@ -20,7 +20,7 @@ TODO
     * "Group": `DANDI`
   * "Create user"
   * Copy the "Access key ID" and "Secret access key" value to a temporary local location
-    
+
 * Add IAM user credentials to Terraform Cloud
   * Log in to Terraform Cloud
   * Workspace: `dandi-prod`
@@ -34,7 +34,7 @@ TODO
     * Sensitive: <checked>
 
 ## Sponsored AWS Account
-* Add a new IAM Role (`dandi-infrastructure`), 
+* Add a new IAM Role (`dandi-infrastructure`),
   which allows the project account to make changes to this account
   * Log in to the AWS console for the Sponsored account
   * "Identity and Access Management (IAM)"
@@ -49,7 +49,7 @@ TODO
   * "Role name"
     * `dandi-infrastructure`
 
-* Because `dandi-infrastructure-bot` on the Project account has `AdministratorAccess` 
+* Because `dandi-infrastructure-bot` on the Project account has `AdministratorAccess`
   via the `DANDI` group, it does not require an additional explicit grant of `sts:AssumeRole`
   in order to assume the cross-account `dandi-infrastructure` role
 
