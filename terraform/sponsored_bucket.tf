@@ -120,8 +120,8 @@ data "aws_iam_policy_document" "sponsored_bucket" {
   statement {
     sid = "dandi-api"
     principals {
-      type = "AWS"
-      identifiers = [data.aws_iam_user.api.arn,]
+      type        = "AWS"
+      identifiers = [data.aws_iam_user.api.arn]
     }
     actions = [
       "s3:*",
