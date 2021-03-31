@@ -36,13 +36,17 @@ module "api" {
   }
 }
 
+data "aws_iam_user" "api" {
+  user_name = module.api.iam_user_id
+}
+
 resource "aws_s3_bucket" "api_dandisets_bucket" {
   bucket = "dandi-api-dandisets-testing"
   acl    = "private"
 }
 
 resource "aws_iam_user_policy" "api_dandisets_bucket" {
-  user   = module.api.iam_user_id
+  user   = data.aws_iam_user.api.id
   name   = "dandi-api-dandiset-bucket"
   policy = data.aws_iam_policy_document.api_dandisets_bucket.json
 }
@@ -119,7 +123,7 @@ data "aws_iam_policy_document" "dandi_girder" {
     }
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.project_account.account_id}:user/${module.api.iam_user_id}"]
+      identifiers = [data.aws_iam_user.api.arn]
     }
   }
 }
