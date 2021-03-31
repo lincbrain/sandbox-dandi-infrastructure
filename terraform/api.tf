@@ -56,6 +56,8 @@ data "aws_iam_policy_document" "api_dandisets_bucket" {
     resources = [
       aws_s3_bucket.api_dandisets_bucket.arn,
       "${aws_s3_bucket.api_dandisets_bucket.arn}/*",
+      aws_s3_bucket.sponsored_bucket.arn,
+      "${aws_s3_bucket.sponsored_bucket.arn}/*",
     ]
   }
 }
