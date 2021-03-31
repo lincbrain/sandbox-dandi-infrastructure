@@ -121,9 +121,5 @@ data "aws_iam_policy_document" "dandi_girder" {
       type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
-    principals {
-      type        = "AWS"
-      identifiers = [data.aws_iam_user.api.arn]
-    }
   }
 }
