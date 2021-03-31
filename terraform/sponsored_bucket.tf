@@ -116,4 +116,18 @@ data "aws_iam_policy_document" "sponsored_bucket" {
       values   = [aws_s3_bucket.sponsored_bucket.arn]
     }
   }
+
+  statement {
+    sid = "dandi-api"
+    principals {
+      type = "AWS"
+      identifiers = [data.aws_iam_user.api.arn,]
+    }
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "${aws_s3_bucket.sponsored_bucket.arn}/*",
+    ]
+  }
 }

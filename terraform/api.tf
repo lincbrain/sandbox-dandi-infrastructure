@@ -22,7 +22,7 @@ module "api" {
 
   additional_django_vars = {
     # DJANGO_DANDI_DANDISETS_BUCKET_NAME = aws_s3_bucket.sponsored_bucket.id
-    DJANGO_DANDI_DANDISETS_BUCKET_NAME = aws_s3_bucket.api_dandisets_bucket.id
+    DJANGO_DANDI_DANDISETS_BUCKET_NAME = aws_s3_bucket.sponsored_bucket.id
     DJANGO_DANDI_SCHEMA_VERSION        = "0.1.0"
     DJANGO_DANDI_GIRDER_API_URL        = "https://girder.dandiarchive.org/api/v1"
     DJANGO_DANDI_DOI_API_URL           = "https://api.test.datacite.org/dois"
@@ -36,13 +36,17 @@ module "api" {
   }
 }
 
+data "aws_iam_user" "api" {
+  user_name = module.api.iam_user_id
+}
+
 resource "aws_s3_bucket" "api_dandisets_bucket" {
   bucket = "dandi-api-dandisets-testing"
   acl    = "private"
 }
 
 resource "aws_iam_user_policy" "api_dandisets_bucket" {
-  user   = module.api.iam_user_id
+  user   = data.aws_iam_user.api.id
   name   = "dandi-api-dandiset-bucket"
   policy = data.aws_iam_policy_document.api_dandisets_bucket.json
 }
@@ -56,6 +60,8 @@ data "aws_iam_policy_document" "api_dandisets_bucket" {
     resources = [
       aws_s3_bucket.api_dandisets_bucket.arn,
       "${aws_s3_bucket.api_dandisets_bucket.arn}/*",
+      aws_s3_bucket.sponsored_bucket.arn,
+      "${aws_s3_bucket.sponsored_bucket.arn}/*",
     ]
   }
 }
@@ -117,7 +123,7 @@ data "aws_iam_policy_document" "dandi_girder" {
     }
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.project_account.account_id}:user/${module.api.iam_user_id}"]
+      identifiers = [data.aws_iam_user.api.arn]
     }
   }
 }
