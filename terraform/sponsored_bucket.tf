@@ -37,6 +37,14 @@ resource "aws_s3_bucket" "sponsored_bucket" {
   }
 }
 
+resource "aws_s3_bucket_ownership_controls" "sponsored_bucket" {
+  bucket = aws_s3_bucket.sponsored_bucket.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket" "sponsored_bucket_logs" {
   provider = aws.sponsored
 
@@ -120,8 +128,8 @@ data "aws_iam_policy_document" "sponsored_bucket" {
   statement {
     sid = "dandi-api"
     principals {
-      type = "AWS"
-      identifiers = [data.aws_iam_user.api.arn,]
+      type        = "AWS"
+      identifiers = [data.aws_iam_user.api.arn]
     }
     actions = [
       "s3:*",
@@ -129,5 +137,10 @@ data "aws_iam_policy_document" "sponsored_bucket" {
     resources = [
       "${aws_s3_bucket.sponsored_bucket.arn}/*",
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
   }
 }
