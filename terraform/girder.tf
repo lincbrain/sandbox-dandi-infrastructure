@@ -7,7 +7,7 @@ resource "aws_route53_record" "girder" {
   name    = "girder"
   type    = "A"
   ttl     = "300"
-  records = [module.girder_server.ec2_ip]
+  records = ["www.dandiarchive.org"]
 }
 
 module "girder_server" {
