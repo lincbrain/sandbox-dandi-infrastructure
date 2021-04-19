@@ -5,7 +5,7 @@ data "local_file" "ssh_public_key" {
 resource "aws_route53_record" "girder" {
   zone_id = aws_route53_zone.dandi.zone_id
   name    = "girder"
-  type    = "A"
+  type    = "CNAME"
   ttl     = "300"
   records = ["www.dandiarchive.org"]
 }
