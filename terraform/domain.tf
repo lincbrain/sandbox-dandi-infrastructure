@@ -15,7 +15,7 @@ resource "aws_route53_record" "gui" {
   name    = "gui"
   type    = "CNAME"
   ttl     = "300"
-  records = ["dandiarchive.org"]
+  records = ["gui-dandiarchive-org.netlify.com"]
 }
 
 resource "aws_route53_record" "www" {
