@@ -42,13 +42,13 @@ resource "heroku_pipeline" "dandi_pipeline" {
 }
 
 resource "heroku_pipeline_coupling" "staging" {
-  app      = "dandi-api-staging"
+  app      = module.api_staging.heroku_app_id
   pipeline = heroku_pipeline.dandi_pipeline.id
   stage    = "staging"
 }
 
 resource "heroku_pipeline_coupling" "production" {
-  app      = "dandi-api"
+  app      = module.api.heroku_app_id
   pipeline = heroku_pipeline.dandi_pipeline.id
   stage    = "production"
 }
