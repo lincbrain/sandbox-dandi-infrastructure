@@ -30,7 +30,7 @@ module "api_staging" {
 }
 
 data "aws_iam_user" "api_staging" {
-  user_name = module.api_staging.iam_user_id
+  user_name = module.api_staging.heroku_iam_user_id
 }
 
 resource "aws_s3_bucket" "api_staging_dandisets_bucket" {
