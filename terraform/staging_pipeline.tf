@@ -29,10 +29,38 @@ module "api_staging" {
   }
 }
 
+data "aws_iam_user" "api_staging" {
+  user_name = module.api_staging.heroku_iam_user_id
+}
+
 resource "aws_s3_bucket" "api_staging_dandisets_bucket" {
   bucket = "dandi-api-staging-dandisets"
   acl    = "private"
 }
+
+resource "aws_s3_bucket_policy" "api_staging_dandisets_bucket" {
+  bucket = aws_s3_bucket.api_staging_dandisets_bucket.id
+  policy = data.aws_iam_policy_document.api_staging_dandisets_bucket.json
+}
+
+data "aws_iam_policy_document" "api_staging_dandisets_bucket" {
+  version = "2008-10-17"
+
+  statement {
+    sid = "dandi-api-staging"
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_iam_user.api_staging.arn]
+    }
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "${aws_s3_bucket.api_staging_dandisets_bucket.arn}/*",
+    ]
+  }
+}
+
 
 resource "heroku_pipeline" "dandi_pipeline" {
   name = "dandi-pipeline"
