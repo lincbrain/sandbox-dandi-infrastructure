@@ -41,26 +41,19 @@ data "aws_iam_user" "api" {
   user_name = module.api.iam_user_id
 }
 
-resource "aws_s3_bucket" "api_dandisets_bucket" {
-  bucket = "dandi-api-dandisets-testing"
-  acl    = "private"
-}
-
-resource "aws_iam_user_policy" "api_dandisets_bucket" {
+resource "aws_iam_user_policy" "api_sponsored_bucket" {
   user   = data.aws_iam_user.api.user_name
-  name   = "dandi-api-dandiset-bucket"
-  policy = data.aws_iam_policy_document.api_dandisets_bucket.json
+  name   = "dandi-api-sponsored-bucket"
+  policy = data.aws_iam_policy_document.api_sponsored_bucket.json
 }
 
-data "aws_iam_policy_document" "api_dandisets_bucket" {
+data "aws_iam_policy_document" "api_sponsored_bucket" {
   statement {
     actions = [
       # TODO Figure out minimal set of permissions django storages needs for S3
       "s3:*",
     ]
     resources = [
-      aws_s3_bucket.api_dandisets_bucket.arn,
-      "${aws_s3_bucket.api_dandisets_bucket.arn}/*",
       aws_s3_bucket.sponsored_bucket.arn,
       "${aws_s3_bucket.sponsored_bucket.arn}/*",
     ]
