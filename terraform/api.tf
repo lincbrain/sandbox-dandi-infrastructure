@@ -15,7 +15,7 @@ module "api" {
   heroku_worker_dyno_size = "standard-2x"
   heroku_postgresql_plan  = "standard-0"
   heroku_cloudamqp_plan   = "squirrel-1"
-  heroku_papertrail_plan  = "forsta"
+  heroku_papertrail_plan  = "volmar"
 
   django_cors_origin_whitelist       = ["https://gui.dandiarchive.org", "https://gui-beta-dandiarchive-org.netlify.app"]
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
