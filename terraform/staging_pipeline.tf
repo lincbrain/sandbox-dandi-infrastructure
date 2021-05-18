@@ -16,7 +16,7 @@ module "api_staging" {
   additional_django_vars = {
     DJANGO_DANDI_DANDISETS_BUCKET_NAME   = aws_s3_bucket.api_staging_dandisets_bucket.id
     DJANGO_DANDI_DANDISETS_BUCKET_PREFIX = ""
-    DJANGO_DANDI_SCHEMA_VERSION          = "0.3.0"
+    DJANGO_DANDI_SCHEMA_VERSION          = "0.3.1"
     DJANGO_DANDI_DOI_API_URL             = "https://api.test.datacite.org/dois"
     DJANGO_DANDI_DOI_API_USER            = "dartlib.dandi"
     DJANGO_DANDI_DOI_API_PREFIX          = "10.80507"
