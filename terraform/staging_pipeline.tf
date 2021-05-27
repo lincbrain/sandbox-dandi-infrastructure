@@ -10,6 +10,9 @@ module "api_staging" {
   route53_zone_id  = aws_route53_zone.dandi.zone_id
   subdomain_name   = "api-staging"
 
+  heroku_web_dyno_quantity    = 0
+  heroku_worker_dyno_quantity = 0
+
   django_cors_origin_whitelist       = ["https://gui-staging.dandiarchive.org"]
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
 
