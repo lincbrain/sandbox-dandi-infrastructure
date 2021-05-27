@@ -24,6 +24,7 @@ module "api_staging" {
     DJANGO_DANDI_DOI_API_USER            = "dartlib.dandi"
     DJANGO_DANDI_DOI_API_PREFIX          = "10.80507"
     DJANGO_SENTRY_DSN                    = "https://4bd48b5174ea4b42a130e63ebe3d60d2@o308436.ingest.sentry.io/5266078"
+    DJANGO_SENTRY_ENVIRONMENT            = "staging"
   }
   additional_sensitive_django_vars = {
     DJANGO_DANDI_DOI_API_PASSWORD = var.doi_api_password
