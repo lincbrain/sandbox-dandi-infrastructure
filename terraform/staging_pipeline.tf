@@ -28,7 +28,7 @@ module "api_staging" {
     DJANGO_SENTRY_ENVIRONMENT            = "staging"
   }
   additional_sensitive_django_vars = {
-    DJANGO_DANDI_DOI_API_PASSWORD = var.doi_api_password
+    DJANGO_DANDI_DOI_API_PASSWORD = var.test_doi_api_password
   }
 }
 
