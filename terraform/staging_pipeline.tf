@@ -10,6 +10,8 @@ module "api_staging" {
   route53_zone_id  = aws_route53_zone.dandi.zone_id
   subdomain_name   = "api-staging"
 
+  heroku_postgresql_plan = "hobby-basic"
+
   heroku_web_dyno_quantity    = 1
   heroku_worker_dyno_quantity = 1
 
