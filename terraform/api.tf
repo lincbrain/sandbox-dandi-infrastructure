@@ -21,7 +21,8 @@ module "api" {
   django_cors_origin_whitelist       = [
     "https://gui.dandiarchive.org",
     "https://gui-beta-dandiarchive-org.netlify.app",
-    "https://codepen.io"
+    "https://codepen.io",
+    "https://cdpn.io"
   ]
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
 
