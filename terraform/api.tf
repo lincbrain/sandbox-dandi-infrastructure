@@ -34,6 +34,7 @@ module "api" {
     DJANGO_DANDI_DOI_API_URL             = "https://api.datacite.org/dois"
     DJANGO_DANDI_DOI_API_USER            = "dartlib.dandi"
     DJANGO_DANDI_DOI_API_PREFIX          = "10.48324"
+    DJANGO_DANDI_DOI_PUBLISH             = "true"
     DJANGO_SENTRY_DSN                    = "https://4bd48b5174ea4b42a130e63ebe3d60d2@o308436.ingest.sentry.io/5266078"
     DJANGO_SENTRY_ENVIRONMENT            = "production"
   }
