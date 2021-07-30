@@ -11,6 +11,7 @@ module "api_staging" {
   subdomain_name   = "api-staging"
 
   heroku_postgresql_plan = "hobby-basic"
+  heroku_cloudamqp_plan  = "tiger"
 
   heroku_web_dyno_quantity    = 1
   heroku_worker_dyno_quantity = 1
