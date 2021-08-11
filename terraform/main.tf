@@ -34,6 +34,8 @@ provider "heroku" {
   # Must set HEROKU_EMAIL, HEROKU_API_KEY envvars
 }
 
+data "aws_canonical_user_id" "project_account" {}
+
 data "aws_caller_identity" "project_account" {}
 
 data "aws_canonical_user_id" "sponsored_account" {
