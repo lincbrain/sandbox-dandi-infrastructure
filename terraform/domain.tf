@@ -44,3 +44,11 @@ resource "aws_route53_record" "email" {
     "20 mx2.improvmx.com.",
   ]
 }
+
+resource "aws_route53_record" "email-spf" {
+  zone_id = aws_route53_zone.dandi.zone_id
+  name    = "" # apex
+  type    = "TXT"
+  ttl     = "300"
+  records = ["v=spf1 include:spf.improvmx.com ~all"]
+}
