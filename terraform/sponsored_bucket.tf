@@ -143,4 +143,18 @@ data "aws_iam_policy_document" "sponsored_bucket" {
       values   = ["bucket-owner-full-control"]
     }
   }
+
+  statement {
+    sid = "dandi-api-delete"
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_iam_user.api.arn]
+    }
+    actions = [
+      "s3:Delete*",
+    ]
+    resources = [
+      "${aws_s3_bucket.sponsored_bucket.arn}/*",
+    ]
+  }
 }
