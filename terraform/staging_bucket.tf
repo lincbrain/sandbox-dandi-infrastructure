@@ -97,6 +97,20 @@ data "aws_iam_policy_document" "api_staging_dandisets_bucket" {
   }
 
   statement {
+    sid = "dandi-api-staging-delete"
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_iam_user.api_staging.arn]
+    }
+    actions = [
+      "s3:Delete*",
+    ]
+    resources = [
+      "${aws_s3_bucket.api_staging_dandisets_bucket.arn}/*",
+    ]
+  }
+
+  statement {
     principals {
       identifiers = ["*"]
       type        = "*"
