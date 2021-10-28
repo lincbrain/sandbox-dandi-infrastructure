@@ -17,6 +17,9 @@ module "api" {
   heroku_cloudamqp_plan   = "tiger"
   heroku_papertrail_plan  = "volmar"
 
+  heroku_web_dyno_quantity    = 1
+  heroku_worker_dyno_quantity = 1
+
   django_default_from_email = "admin@api.dandiarchive.org"
   django_cors_origin_whitelist = [
     "https://gui.dandiarchive.org",
