@@ -41,6 +41,13 @@ module "api" {
   }
 }
 
+resource "heroku_formation" "api_checksum_worker" {
+  app      = module.api.heroku_app_id
+  type     = "checksum-worker"
+  size     = "standard-1x"
+  quantity = 1
+}
+
 data "aws_iam_user" "api" {
   user_name = module.api.iam_user_id
 }
