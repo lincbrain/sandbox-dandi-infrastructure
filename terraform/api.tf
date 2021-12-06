@@ -38,6 +38,8 @@ module "api" {
     DJANGO_SENTRY_DSN                    = "https://4bd48b5174ea4b42a130e63ebe3d60d2@o308436.ingest.sentry.io/5266078"
     DJANGO_SENTRY_ENVIRONMENT            = "production"
     DJANGO_CELERY_WORKER_CONCURRENCY     = "4"
+    DJANGO_DANDI_WEB_APP_URL             = "https://dandiarchive.org"
+    DJANGO_DANDI_API_URL                 = "https://api.dandiarchive.org"
   }
   additional_sensitive_django_vars = {
     DJANGO_DANDI_DOI_API_PASSWORD = var.doi_api_password
