@@ -25,7 +25,6 @@ resource "aws_s3_bucket" "api_staging_embargo_dandisets_bucket" {
   }
 
   logging {
-    # Dumping all logs into the same bucket
     target_bucket = aws_s3_bucket.api_staging_embargo_dandisets_bucket_logs.id
   }
 
@@ -92,7 +91,7 @@ data "aws_iam_policy_document" "api_staging_embargo_dandisets_bucket" {
       "s3:*",
     ]
     resources = [
-      "${aws_s3_bucket.api_staging_dandisets_bucket.arn}/*",
+      "${aws_s3_bucket.api_staging_embargo_dandisets_bucket.arn}/*",
     ]
     condition {
       test     = "StringEquals"
@@ -111,7 +110,7 @@ data "aws_iam_policy_document" "api_staging_embargo_dandisets_bucket" {
       "s3:Delete*",
     ]
     resources = [
-      "${aws_s3_bucket.api_staging_dandisets_bucket.arn}/*",
+      "${aws_s3_bucket.api_staging_embargo_dandisets_bucket.arn}/*",
     ]
   }
 }
