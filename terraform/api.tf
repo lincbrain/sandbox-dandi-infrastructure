@@ -28,18 +28,19 @@ module "api" {
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
 
   additional_django_vars = {
-    # DJANGO_DANDI_DANDISETS_BUCKET_NAME = aws_s3_bucket.sponsored_bucket.id
-    DJANGO_DANDI_DANDISETS_BUCKET_NAME   = aws_s3_bucket.sponsored_bucket.id
-    DJANGO_DANDI_DANDISETS_BUCKET_PREFIX = ""
-    DJANGO_DANDI_DOI_API_URL             = "https://api.datacite.org/dois"
-    DJANGO_DANDI_DOI_API_USER            = "dartlib.dandi"
-    DJANGO_DANDI_DOI_API_PREFIX          = "10.48324"
-    DJANGO_DANDI_DOI_PUBLISH             = "true"
-    DJANGO_SENTRY_DSN                    = "https://4bd48b5174ea4b42a130e63ebe3d60d2@o308436.ingest.sentry.io/5266078"
-    DJANGO_SENTRY_ENVIRONMENT            = "production"
-    DJANGO_CELERY_WORKER_CONCURRENCY     = "4"
-    DJANGO_DANDI_WEB_APP_URL             = "https://dandiarchive.org"
-    DJANGO_DANDI_API_URL                 = "https://api.dandiarchive.org"
+    DJANGO_DANDI_DANDISETS_BUCKET_NAME           = aws_s3_bucket.sponsored_bucket.id
+    DJANGO_DANDI_DANDISETS_BUCKET_PREFIX         = ""
+    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME   = aws_s3_bucket.sponsored_embargo_bucket.id
+    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_PREFIX = ""
+    DJANGO_DANDI_DOI_API_URL                     = "https://api.datacite.org/dois"
+    DJANGO_DANDI_DOI_API_USER                    = "dartlib.dandi"
+    DJANGO_DANDI_DOI_API_PREFIX                  = "10.48324"
+    DJANGO_DANDI_DOI_PUBLISH                     = "true"
+    DJANGO_SENTRY_DSN                            = "https://4bd48b5174ea4b42a130e63ebe3d60d2@o308436.ingest.sentry.io/5266078"
+    DJANGO_SENTRY_ENVIRONMENT                    = "production"
+    DJANGO_CELERY_WORKER_CONCURRENCY             = "4"
+    DJANGO_DANDI_WEB_APP_URL                     = "https://dandiarchive.org"
+    DJANGO_DANDI_API_URL                         = "https://api.dandiarchive.org"
   }
   additional_sensitive_django_vars = {
     DJANGO_DANDI_DOI_API_PASSWORD = var.doi_api_password

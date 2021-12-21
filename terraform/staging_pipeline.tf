@@ -24,18 +24,20 @@ module "api_staging" {
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
 
   additional_django_vars = {
-    DJANGO_CONFIGURATION                 = "HerokuStagingConfiguration"
-    DJANGO_DANDI_DANDISETS_BUCKET_NAME   = aws_s3_bucket.api_staging_dandisets_bucket.id
-    DJANGO_DANDI_DANDISETS_BUCKET_PREFIX = ""
-    DJANGO_DANDI_DOI_API_URL             = "https://api.test.datacite.org/dois"
-    DJANGO_DANDI_DOI_API_USER            = "dartlib.dandi"
-    DJANGO_DANDI_DOI_API_PREFIX          = "10.80507"
-    DJANGO_DANDI_DOI_PUBLISH             = "false"
-    DJANGO_SENTRY_DSN                    = "https://4bd48b5174ea4b42a130e63ebe3d60d2@o308436.ingest.sentry.io/5266078"
-    DJANGO_SENTRY_ENVIRONMENT            = "staging"
-    DJANGO_CELERY_WORKER_CONCURRENCY     = "2"
-    DJANGO_DANDI_WEB_APP_URL             = "https://gui-staging.dandiarchive.org"
-    DJANGO_DANDI_API_URL                 = "https://api-staging.dandiarchive.org"
+    DJANGO_CONFIGURATION                         = "HerokuStagingConfiguration"
+    DJANGO_DANDI_DANDISETS_BUCKET_NAME           = aws_s3_bucket.api_staging_dandisets_bucket.id
+    DJANGO_DANDI_DANDISETS_BUCKET_PREFIX         = ""
+    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME   = aws_s3_bucket.api_staging_embargo_dandisets_bucket.id
+    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_PREFIX = ""
+    DJANGO_DANDI_DOI_API_URL                     = "https://api.test.datacite.org/dois"
+    DJANGO_DANDI_DOI_API_USER                    = "dartlib.dandi"
+    DJANGO_DANDI_DOI_API_PREFIX                  = "10.80507"
+    DJANGO_DANDI_DOI_PUBLISH                     = "false"
+    DJANGO_SENTRY_DSN                            = "https://4bd48b5174ea4b42a130e63ebe3d60d2@o308436.ingest.sentry.io/5266078"
+    DJANGO_SENTRY_ENVIRONMENT                    = "staging"
+    DJANGO_CELERY_WORKER_CONCURRENCY             = "2"
+    DJANGO_DANDI_WEB_APP_URL                     = "https://gui-staging.dandiarchive.org"
+    DJANGO_DANDI_API_URL                         = "https://api-staging.dandiarchive.org"
   }
   additional_sensitive_django_vars = {
     DJANGO_DANDI_DOI_API_PASSWORD = var.test_doi_api_password
