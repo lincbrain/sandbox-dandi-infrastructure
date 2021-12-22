@@ -30,7 +30,7 @@ module "api" {
   additional_django_vars = {
     DJANGO_DANDI_DANDISETS_BUCKET_NAME           = aws_s3_bucket.sponsored_bucket.id
     DJANGO_DANDI_DANDISETS_BUCKET_PREFIX         = ""
-    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME   = aws_s3_bucket.sponsored_embargo_bucket.id
+    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME   = module.sponsored_embargo_bucket.bucket_name
     DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_PREFIX = ""
     DJANGO_DANDI_DOI_API_URL                     = "https://api.datacite.org/dois"
     DJANGO_DANDI_DOI_API_USER                    = "dartlib.dandi"

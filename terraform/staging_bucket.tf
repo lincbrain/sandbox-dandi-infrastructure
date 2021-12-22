@@ -1,3 +1,4 @@
+// TODO use the dandiset_bucket module
 resource "aws_s3_bucket" "api_staging_dandisets_bucket" {
 
   bucket = "dandi-api-staging-dandisets"
@@ -152,5 +153,54 @@ data "aws_iam_policy_document" "api_staging_dandisets_bucket" {
       variable = "aws:SourceArn"
       values   = [aws_s3_bucket.api_staging_dandisets_bucket.arn]
     }
+  }
+}
+
+module "staging_embargo_bucket" {
+  source              = "./modules/dandiset_bucket"
+  bucket_name         = "dandi-api-staging-embargo-dandisets"
+  versioning          = false
+  log_bucket_name     = "dandi-api-staging-embargo-dandisets-logs"
+  log_bucket_owner_id = data.aws_canonical_user_id.project_account.id
+  policy_json         = data.aws_iam_policy_document.staging_embargo_bucket.json
+  providers = {
+    aws = aws
+  }
+}
+
+data "aws_iam_policy_document" "staging_embargo_bucket" {
+  version = "2008-10-17"
+
+  statement {
+    sid = "dandi-api-staging"
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_iam_user.api_staging.arn]
+    }
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "${module.staging_embargo_bucket.bucket_arn}/*",
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+  }
+
+  statement {
+    sid = "dandi-api-staging-delete"
+    principals {
+      type        = "AWS"
+      identifiers = [data.aws_iam_user.api_staging.arn]
+    }
+    actions = [
+      "s3:Delete*",
+    ]
+    resources = [
+      "${module.staging_embargo_bucket.bucket_arn}/*",
+    ]
   }
 }
