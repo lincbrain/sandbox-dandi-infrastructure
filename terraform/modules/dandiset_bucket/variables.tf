@@ -13,9 +13,8 @@ variable "versioning" {
   description = "Whether or not versioning should be enabled on the bucket."
 }
 
-variable "heroku_user_arn" {
-  type        = string
-  description = "The name of the Heroku API user who will have write access to the bucket."
+variable "heroku_user" {
+  description = "The Heroku API IAM user who will have write access to the bucket."
 }
 
 variable "log_bucket_name" {

@@ -73,14 +73,14 @@ resource "aws_s3_bucket" "log_bucket" {
 
 resource "aws_iam_user_policy" "dandiset_bucket_owner" {
   name = "${var.bucket_name}-ownership-policy"
-  user = var.heroku_user_arn
+  user = var.heroku_user.user_name
 
   policy = jsonencode({
     Version = "2008-10-17"
     Statement = [
       {
         Principal = {
-          "AWS" = [var.heroku_user_arn]
+          "AWS" = [var.heroku_user.arn]
         }
         Action = [
           "s3:*",
