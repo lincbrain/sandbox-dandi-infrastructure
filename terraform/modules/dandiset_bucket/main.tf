@@ -1,7 +1,6 @@
 data "aws_canonical_user_id" "log_bucket_owner_account" {}
 
 resource "aws_s3_bucket" "dandiset_bucket" {
-  # provider = var.aws_provider
 
   bucket = var.bucket_name
   // Public access is granted via a bucket policy, not a canned ACL
@@ -72,6 +71,9 @@ resource "aws_s3_bucket" "log_bucket" {
 }
 
 resource "aws_iam_user_policy" "dandiset_bucket_owner" {
+  // The Heroku IAM user will always be in the project account
+  provider = aws
+
   name = "${var.bucket_name}-ownership-policy"
   user = var.heroku_user.user_name
 
