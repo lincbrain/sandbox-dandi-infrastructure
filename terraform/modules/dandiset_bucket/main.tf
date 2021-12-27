@@ -48,8 +48,6 @@ resource "aws_s3_bucket_ownership_controls" "dandiset_bucket" {
 }
 
 resource "aws_s3_bucket" "log_bucket" {
-  # provider = var.aws_provider
-
   bucket = var.log_bucket_name
 
   grant {
@@ -77,8 +75,6 @@ resource "aws_iam_user_policy" "dandiset_bucket_owner" {
   name = "${var.bucket_name}-ownership-policy"
   user = var.heroku_user_arn
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
     Version = "2008-10-17"
     Statement = [
