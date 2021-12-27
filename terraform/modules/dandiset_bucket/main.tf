@@ -71,9 +71,33 @@ resource "aws_s3_bucket" "log_bucket" {
   }
 }
 
-resource "aws_s3_bucket_policy" "dandiset_bucket" {
-  # provider = var.aws_provider
+resource "aws_iam_user_policy" "dandiset_bucket_owner" {
+  name = "${var.bucket_name}-ownership-policy"
+  user = var.heroku_user_arn
 
-  bucket = aws_s3_bucket.dandiset_bucket.id
-  policy = var.policy_json
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2008-10-17"
+    Statement = [
+      {
+        Principal = {
+          "AWS" = [var.heroku_user_arn]
+        }
+        Action = [
+          "s3:*",
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${aws_s3_bucket.dandiset_bucket.arn}",
+          "${aws_s3_bucket.dandiset_bucket.arn}/*",
+        ]
+        "Condition" : {
+          "StringEquals" : {
+            "s3:x-amz-acl" : "bucket-owner-full-control"
+          }
+        }
+      },
+    ]
+  })
 }

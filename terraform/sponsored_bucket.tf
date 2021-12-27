@@ -164,34 +164,10 @@ module "sponsored_embargo_bucket" {
   source              = "./modules/dandiset_bucket"
   bucket_name         = "dandiarchive-embargo"
   versioning          = false
+  heroku_user_arn     = data.aws_iam_user.api.arn
   log_bucket_name     = "dandiarchive-embargo-logs"
   log_bucket_owner_id = data.aws_canonical_user_id.sponsored_account.id
-  policy_json         = data.aws_iam_policy_document.sponsored_embargo_bucket.json
   providers = {
     aws = aws.sponsored
-  }
-}
-
-data "aws_iam_policy_document" "sponsored_embargo_bucket" {
-  version = "2008-10-17"
-
-  statement {
-    sid = "dandi-api"
-    principals {
-      type        = "AWS"
-      identifiers = [data.aws_iam_user.api.arn]
-    }
-    actions = [
-      "s3:*",
-    ]
-    resources = [
-      "${module.sponsored_embargo_bucket.bucket_arn}",
-      "${module.sponsored_embargo_bucket.bucket_arn}/*",
-    ]
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
-    }
   }
 }
