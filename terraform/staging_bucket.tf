@@ -163,6 +163,7 @@ module "staging_embargo_bucket" {
   heroku_user     = data.aws_iam_user.api_staging
   log_bucket_name = "dandi-api-staging-embargo-dandisets-logs"
   providers = {
-    aws = aws
+    aws         = aws
+    aws.project = aws
   }
 }

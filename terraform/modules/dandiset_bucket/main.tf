@@ -72,7 +72,7 @@ resource "aws_s3_bucket" "log_bucket" {
 
 resource "aws_iam_user_policy" "dandiset_bucket_owner" {
   // The Heroku IAM user will always be in the project account
-  provider = aws
+  provider = aws.project
 
   name = "${var.bucket_name}-ownership-policy"
   user = var.heroku_user.user_name
