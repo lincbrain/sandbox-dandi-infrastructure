@@ -160,7 +160,7 @@ module "staging_embargo_bucket" {
   source          = "./modules/dandiset_bucket"
   bucket_name     = "dandi-api-staging-embargo-dandisets"
   versioning      = false
-  heroku_user_arn = data.aws_iam_user.api_staging.arn
+  heroku_user     = data.aws_iam_user.api_staging
   log_bucket_name = "dandi-api-staging-embargo-dandisets-logs"
   providers = {
     aws = aws
