@@ -161,12 +161,11 @@ data "aws_iam_policy_document" "sponsored_bucket" {
 }
 
 module "sponsored_embargo_bucket" {
-  source              = "./modules/dandiset_bucket"
-  bucket_name         = "dandiarchive-embargo"
-  versioning          = false
-  heroku_user_arn     = data.aws_iam_user.api.arn
-  log_bucket_name     = "dandiarchive-embargo-logs"
-  log_bucket_owner_id = data.aws_canonical_user_id.sponsored_account.id
+  source          = "./modules/dandiset_bucket"
+  bucket_name     = "dandiarchive-embargo"
+  versioning      = false
+  heroku_user_arn = data.aws_iam_user.api.arn
+  log_bucket_name = "dandiarchive-embargo-logs"
   providers = {
     aws = aws.sponsored
   }

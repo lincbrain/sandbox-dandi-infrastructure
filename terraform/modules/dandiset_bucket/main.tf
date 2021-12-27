@@ -1,3 +1,5 @@
+data "aws_canonical_user_id" "log_bucket_owner_account" {}
+
 resource "aws_s3_bucket" "dandiset_bucket" {
   # provider = var.aws_provider
 
@@ -60,7 +62,7 @@ resource "aws_s3_bucket" "log_bucket" {
   }
   grant {
     type = "CanonicalUser"
-    id   = var.log_bucket_owner_id
+    id   = data.aws_canonical_user_id.log_bucket_owner_account.id
     permissions = [
       "FULL_CONTROL",
     ]

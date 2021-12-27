@@ -22,8 +22,3 @@ variable "log_bucket_name" {
   type        = string
   description = "The name of the log bucket."
 }
-
-variable "log_bucket_owner_id" {
-  type        = string
-  description = "The ID of the aws_canonical_user_id who owns the log bucket."
-}

@@ -157,12 +157,11 @@ data "aws_iam_policy_document" "api_staging_dandisets_bucket" {
 }
 
 module "staging_embargo_bucket" {
-  source              = "./modules/dandiset_bucket"
-  bucket_name         = "dandi-api-staging-embargo-dandisets"
-  versioning          = false
-  heroku_user_arn     = data.aws_iam_user.api_staging.arn
-  log_bucket_name     = "dandi-api-staging-embargo-dandisets-logs"
-  log_bucket_owner_id = data.aws_canonical_user_id.project_account.id
+  source          = "./modules/dandiset_bucket"
+  bucket_name     = "dandi-api-staging-embargo-dandisets"
+  versioning      = false
+  heroku_user_arn = data.aws_iam_user.api_staging.arn
+  log_bucket_name = "dandi-api-staging-embargo-dandisets-logs"
   providers = {
     aws = aws
   }
