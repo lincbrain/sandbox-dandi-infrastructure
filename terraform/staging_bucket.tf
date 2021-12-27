@@ -1,3 +1,4 @@
+// TODO use the dandiset_bucket module
 resource "aws_s3_bucket" "api_staging_dandisets_bucket" {
 
   bucket = "dandi-api-staging-dandisets"
@@ -152,5 +153,16 @@ data "aws_iam_policy_document" "api_staging_dandisets_bucket" {
       variable = "aws:SourceArn"
       values   = [aws_s3_bucket.api_staging_dandisets_bucket.arn]
     }
+  }
+}
+
+module "staging_embargo_bucket" {
+  source          = "./modules/dandiset_bucket"
+  bucket_name     = "dandi-api-staging-embargo-dandisets"
+  versioning      = false
+  heroku_user_arn = data.aws_iam_user.api_staging.arn
+  log_bucket_name = "dandi-api-staging-embargo-dandisets-logs"
+  providers = {
+    aws = aws
   }
 }

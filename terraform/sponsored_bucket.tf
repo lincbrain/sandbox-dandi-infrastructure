@@ -1,3 +1,4 @@
+// TODO use the dandiset_bucket module
 resource "aws_s3_bucket" "sponsored_bucket" {
   provider = aws.sponsored
 
@@ -156,5 +157,16 @@ data "aws_iam_policy_document" "sponsored_bucket" {
     resources = [
       "${aws_s3_bucket.sponsored_bucket.arn}/*",
     ]
+  }
+}
+
+module "sponsored_embargo_bucket" {
+  source          = "./modules/dandiset_bucket"
+  bucket_name     = "dandiarchive-embargo"
+  versioning      = false
+  heroku_user_arn = data.aws_iam_user.api.arn
+  log_bucket_name = "dandiarchive-embargo-logs"
+  providers = {
+    aws = aws.sponsored
   }
 }
