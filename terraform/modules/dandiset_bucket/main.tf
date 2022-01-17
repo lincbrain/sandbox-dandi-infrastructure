@@ -82,6 +82,18 @@ resource "aws_iam_user_policy" "dandiset_bucket_owner" {
     Statement = [
       {
         Action = [
+          "s3:Get*",
+          "s3:List*",
+          "s3:Delete*",
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${aws_s3_bucket.dandiset_bucket.arn}",
+          "${aws_s3_bucket.dandiset_bucket.arn}/*",
+        ]
+      },
+      {
+        Action = [
           "s3:*",
         ]
         Effect = "Allow"
