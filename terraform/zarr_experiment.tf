@@ -23,9 +23,9 @@ module "api_zarr_experiment" {
 
   additional_django_vars = {
     DJANGO_CONFIGURATION                         = "HerokuStagingConfiguration"
-    DJANGO_DANDI_DANDISETS_BUCKET_NAME           = aws_s3_bucket.api_staging_dandisets_bucket.id
+    DJANGO_DANDI_DANDISETS_BUCKET_NAME           = module.zarr_experiment_bucket.bucket_name
     DJANGO_DANDI_DANDISETS_BUCKET_PREFIX         = ""
-    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME   = module.staging_embargo_bucket.bucket_name
+    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME   = module.zarr_experiment_embargo_bucket.bucket_name
     DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_PREFIX = ""
     DJANGO_DANDI_DOI_API_URL                     = "https://api.test.datacite.org/dois"
     DJANGO_DANDI_DOI_API_USER                    = "dartlib.dandi"
@@ -46,4 +46,32 @@ resource "heroku_formation" "zarr_experiment_checksum_worker" {
   type     = "checksum-worker"
   size     = "hobby"
   quantity = 1
+}
+
+data "aws_iam_user" "api_zarr_experiment" {
+  user_name = module.api_zarr_experiment.heroku_iam_user_id
+}
+
+module "zarr_experiment_bucket" {
+  source          = "./modules/dandiset_bucket"
+  bucket_name     = "dandi-api-zarr-experiment-dandisets"
+  versioning      = false
+  heroku_user     = data.aws_iam_user.api_zarr_experiment
+  log_bucket_name = "dandi-api-zarr-experiment-dandisets-logs"
+  providers = {
+    aws         = aws
+    aws.project = aws
+  }
+}
+
+module "zarr_experiment_embargo_bucket" {
+  source          = "./modules/dandiset_bucket"
+  bucket_name     = "dandi-api-zarr-experiment-embargo-dandisets"
+  versioning      = false
+  heroku_user     = data.aws_iam_user.api_zarr_experiment
+  log_bucket_name = "dandi-api-zarr-experiment-embargo-dandisets-logs"
+  providers = {
+    aws         = aws
+    aws.project = aws
+  }
 }
