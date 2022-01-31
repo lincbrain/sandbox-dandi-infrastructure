@@ -21,10 +21,7 @@ module "api" {
   heroku_worker_dyno_quantity = 1
 
   django_default_from_email = "admin@api.dandiarchive.org"
-  django_cors_origin_whitelist = [
-    "https://gui.dandiarchive.org",
-    "https://gui-beta-dandiarchive-org.netlify.app",
-  ]
+  django_cors_origin_whitelist = ["https://gui.dandiarchive.org"]
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
 
   additional_django_vars = {

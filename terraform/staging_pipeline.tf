@@ -21,7 +21,7 @@ module "api_staging" {
 
   django_default_from_email          = "admin@api-staging.dandiarchive.org"
   django_cors_origin_whitelist       = ["https://gui-staging.dandiarchive.org"]
-  django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
+  django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-staging-dandiarchive-org\\.netlify\\.app$"]
 
   additional_django_vars = {
     DJANGO_CONFIGURATION                         = "HerokuStagingConfiguration"
