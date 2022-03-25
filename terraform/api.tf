@@ -52,7 +52,7 @@ resource "heroku_formation" "api_checksum_worker" {
   quantity = 1
 }
 
-resource "heroku_formation" "api_checksum_worker" {
+resource "heroku_formation" "api_manifest_worker" {
   app      = module.api.heroku_app_id
   type     = "manifest-worker"
   size     = "standard-2x"
