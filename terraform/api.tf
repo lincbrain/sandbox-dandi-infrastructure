@@ -20,8 +20,8 @@ module "api" {
   heroku_web_dyno_quantity    = 1
   heroku_worker_dyno_quantity = 1
 
-  django_default_from_email = "admin@api.dandiarchive.org"
-  django_cors_origin_whitelist = ["https://gui.dandiarchive.org"]
+  django_default_from_email          = "admin@api.dandiarchive.org"
+  django_cors_origin_whitelist       = ["https://gui.dandiarchive.org"]
   django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-dandiarchive-org\\.netlify\\.app$"]
 
   additional_django_vars = {
@@ -49,6 +49,13 @@ resource "heroku_formation" "api_checksum_worker" {
   app      = module.api.heroku_app_id
   type     = "checksum-worker"
   size     = "standard-1x"
+  quantity = 1
+}
+
+resource "heroku_formation" "api_manifest_worker" {
+  app      = module.api.heroku_app_id
+  type     = "manifest-worker"
+  size     = "standard-2x"
   quantity = 1
 }
 
