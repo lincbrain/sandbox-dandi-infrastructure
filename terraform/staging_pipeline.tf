@@ -8,7 +8,7 @@ module "api_staging" {
   project_slug     = "dandi-api-staging"
   heroku_team_name = data.heroku_team.dandi.name
   route53_zone_id  = aws_route53_zone.dandi.zone_id
-  subdomain_name   = "api-staging"
+  subdomain_name   = "api.staging"
 
   heroku_web_dyno_size    = "hobby"
   heroku_worker_dyno_size = "hobby"
