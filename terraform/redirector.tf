@@ -1,7 +1,8 @@
+# Record to point gui.dandiarchive.org to the Netlify hosted redirector
 resource "aws_route53_record" "redirector" {
   zone_id = aws_route53_zone.dandi.zone_id
-  name    = "" # apex
-  type    = "A"
+  name    = "gui"
+  type    = "CNAME"
   ttl     = "300"
-  records = ["3.12.21.28"]
+  records = ["redirect-dandiarchive-org.netlify.com"]
 }

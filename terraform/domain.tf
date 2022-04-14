@@ -12,10 +12,10 @@ resource "aws_route53_record" "acm_validation" {
 
 resource "aws_route53_record" "gui" {
   zone_id = aws_route53_zone.dandi.zone_id
-  name    = "gui"
-  type    = "CNAME"
+  name    = "" # apex
+  type    = "A"
   ttl     = "300"
-  records = ["gui-dandiarchive-org.netlify.com"]
+  records = ["75.2.60.5"] # Netlify's load balancer, which will proxy to our app
 }
 
 resource "aws_route53_record" "gui-staging" {
