@@ -110,3 +110,47 @@ resource "aws_iam_user_policy" "dandiset_bucket_owner" {
     ]
   })
 }
+
+resource "aws_s3_bucket_policy" "dandiset_bucket_policy" {
+  provider = aws
+
+  bucket = aws_s3_bucket.dandiset_bucket.id
+  policy = jsonencode({
+    Version = "2008-10-17"
+    Statement = [
+      {
+        Principal = {
+          AWS = var.heroku_user.arn
+        }
+        Action = [
+          "s3:Get*",
+          "s3:List*",
+          "s3:Delete*",
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${aws_s3_bucket.dandiset_bucket.arn}",
+          "${aws_s3_bucket.dandiset_bucket.arn}/*",
+        ]
+      },
+      {
+        Principal = {
+          AWS = var.heroku_user.arn
+        }
+        Action = [
+          "s3:*",
+        ]
+        Effect = "Allow"
+        Resource = [
+          "${aws_s3_bucket.dandiset_bucket.arn}",
+          "${aws_s3_bucket.dandiset_bucket.arn}/*",
+        ]
+        "Condition" : {
+          "StringEquals" : {
+            "s3:x-amz-acl" : "bucket-owner-full-control"
+          }
+        }
+      },
+    ]
+  })
+}
