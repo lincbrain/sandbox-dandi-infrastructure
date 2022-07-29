@@ -52,13 +52,6 @@ resource "heroku_formation" "api_staging_checksum_worker" {
   quantity = 1
 }
 
-resource "heroku_formation" "api_staging_manifest_worker" {
-  app      = module.api_staging.heroku_app_id
-  type     = "manifest-worker"
-  size     = "hobby"
-  quantity = 1
-}
-
 data "aws_iam_user" "api_staging" {
   user_name = module.api_staging.heroku_iam_user_id
 }
