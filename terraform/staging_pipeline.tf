@@ -10,9 +10,9 @@ module "api_staging" {
   route53_zone_id  = aws_route53_zone.dandi.zone_id
   subdomain_name   = "api-staging"
 
-  heroku_web_dyno_size    = "hobby"
-  heroku_worker_dyno_size = "hobby"
-  heroku_postgresql_plan  = "hobby-basic"
+  heroku_web_dyno_size    = "basic"
+  heroku_worker_dyno_size = "basic"
+  heroku_postgresql_plan  = "basic"
   heroku_cloudamqp_plan   = "tiger"
   heroku_papertrail_plan  = "fixa"
 
@@ -48,7 +48,7 @@ module "api_staging" {
 resource "heroku_formation" "api_staging_checksum_worker" {
   app      = module.api_staging.heroku_app_id
   type     = "checksum-worker"
-  size     = "hobby"
+  size     = "basic"
   quantity = 1
 }
 

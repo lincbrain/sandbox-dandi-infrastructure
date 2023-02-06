@@ -49,7 +49,7 @@ module "api" {
 resource "heroku_formation" "api_checksum_worker" {
   app      = module.api.heroku_app_id
   type     = "checksum-worker"
-  size     = "standard-1x"
+  size     = "standard-2x"
   quantity = 1
 }
 
