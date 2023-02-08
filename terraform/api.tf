@@ -54,7 +54,7 @@ resource "heroku_formation" "api_checksum_worker" {
 }
 
 data "aws_iam_user" "api" {
-  user_name = module.api.iam_user_id
+  user_name = module.api.heroku_iam_user_id
 }
 
 resource "aws_iam_user_policy" "api_sponsored_bucket" {
