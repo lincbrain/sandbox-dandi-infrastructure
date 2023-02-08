@@ -2,8 +2,8 @@
 
 
 module "api_staging" {
-  source  = "girder/django/heroku"
-  version = "0.9.0"
+  source  = "girder/girder4/heroku"
+  version = "0.11.0"
 
   project_slug     = "dandi-api-staging"
   heroku_team_name = data.heroku_team.dandi.name
