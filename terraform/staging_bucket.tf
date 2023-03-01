@@ -35,6 +35,14 @@ resource "aws_s3_bucket" "api_staging_dandisets_bucket" {
   lifecycle {
     prevent_destroy = true
   }
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
 }
 
 resource "aws_s3_bucket_ownership_controls" "api_staging_dandisets_bucket" {
@@ -67,6 +75,13 @@ resource "aws_s3_bucket" "api_staging_dandisets_bucket_logs" {
 
   lifecycle {
     prevent_destroy = true
+  }
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
   }
 }
 
