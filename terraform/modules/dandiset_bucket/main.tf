@@ -93,80 +93,87 @@ resource "aws_iam_user_policy" "dandiset_bucket_owner" {
   name = "${var.bucket_name}-ownership-policy"
   user = var.heroku_user.user_name
 
-  policy = jsonencode({
-    Version = "2008-10-17"
-    Statement = [
-      {
-        Action = [
-          "s3:Get*",
-          "s3:List*",
-          "s3:Delete*",
-        ]
-        Effect = "Allow"
-        Resource = [
-          "${aws_s3_bucket.dandiset_bucket.arn}",
-          "${aws_s3_bucket.dandiset_bucket.arn}/*",
-        ]
-      },
-      {
-        Action = [
-          "s3:*",
-        ]
-        Effect = "Allow"
-        Resource = [
-          "${aws_s3_bucket.dandiset_bucket.arn}",
-          "${aws_s3_bucket.dandiset_bucket.arn}/*",
-        ]
-        "Condition" : {
-          "StringEquals" : {
-            "s3:x-amz-acl" : "bucket-owner-full-control"
-          }
-        }
-      },
-    ]
-  })
+  policy = data.aws_iam_policy_document.dandiset_bucket_owner.json
 }
+
+data "aws_iam_policy_document" "dandiset_bucket_owner" {
+  version = "2008-10-17"
+
+  statement {
+    resources = [
+      "${aws_s3_bucket.dandiset_bucket.arn}",
+      "${aws_s3_bucket.dandiset_bucket.arn}/*",
+    ]
+
+    actions = [
+      "s3:Get*",
+      "s3:List*",
+      "s3:Delete*",
+    ]
+  }
+
+  statement {
+    resources = [
+      "${aws_s3_bucket.dandiset_bucket.arn}",
+      "${aws_s3_bucket.dandiset_bucket.arn}/*",
+    ]
+
+    actions = ["s3:*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+  }
+}
+
 
 resource "aws_s3_bucket_policy" "dandiset_bucket_policy" {
   provider = aws
 
   bucket = aws_s3_bucket.dandiset_bucket.id
-  policy = jsonencode({
-    Version = "2008-10-17"
-    Statement = [
-      {
-        Principal = {
-          AWS = var.heroku_user.arn
-        }
-        Action = [
-          "s3:Get*",
-          "s3:List*",
-          "s3:Delete*",
-        ]
-        Effect = "Allow"
-        Resource = [
-          "${aws_s3_bucket.dandiset_bucket.arn}",
-          "${aws_s3_bucket.dandiset_bucket.arn}/*",
-        ]
-      },
-      {
-        Principal = {
-          AWS = var.heroku_user.arn
-        }
-        Action = [
-          "s3:*",
-        ]
-        Effect = "Allow"
-        Resource = [
-          "${aws_s3_bucket.dandiset_bucket.arn}",
-          "${aws_s3_bucket.dandiset_bucket.arn}/*",
-        ]
-        "Condition" : {
-          "StringEquals" : {
-            "s3:x-amz-acl" : "bucket-owner-full-control"
-          }
-        }
-      },
+  policy = data.aws_iam_policy_document.dandiset_bucket_policy.json
+}
+
+data "aws_iam_policy_document" "dandiset_bucket_policy" {
+  version = "2008-10-17"
+
+  statement {
+    resources = [
+      "${aws_s3_bucket.dandiset_bucket.arn}",
+      "${aws_s3_bucket.dandiset_bucket.arn}/*",
     ]
-  })
+
+    actions = [
+      "s3:Get*",
+      "s3:List*",
+      "s3:Delete*",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = [var.heroku_user.arn]
+    }
+  }
+
+  statement {
+    resources = [
+      "${aws_s3_bucket.dandiset_bucket.arn}",
+      "${aws_s3_bucket.dandiset_bucket.arn}/*",
+    ]
+
+    actions = ["s3:*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "s3:x-amz-acl"
+      values   = ["bucket-owner-full-control"]
+    }
+
+    principals {
+      type        = "AWS"
+      identifiers = [var.heroku_user.arn]
+    }
+  }
 }
