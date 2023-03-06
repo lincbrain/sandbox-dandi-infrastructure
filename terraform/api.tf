@@ -26,7 +26,7 @@ module "api" {
 
   additional_django_vars = {
     DJANGO_CONFIGURATION                         = "HerokuProductionConfiguration"
-    DJANGO_DANDI_DANDISETS_BUCKET_NAME           = aws_s3_bucket.sponsored_bucket.id
+    DJANGO_DANDI_DANDISETS_BUCKET_NAME           = module.sponsored_dandiset_bucket.bucket_name
     DJANGO_DANDI_DANDISETS_BUCKET_PREFIX         = ""
     DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME   = module.sponsored_embargo_bucket.bucket_name
     DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_PREFIX = ""
@@ -57,21 +57,8 @@ data "aws_iam_user" "api" {
   user_name = module.api.heroku_iam_user_id
 }
 
-resource "aws_iam_user_policy" "api_sponsored_bucket" {
-  user   = data.aws_iam_user.api.user_name
-  name   = "dandi-api-sponsored-bucket"
-  policy = data.aws_iam_policy_document.api_sponsored_bucket.json
+moved {
+  from = aws_iam_user_policy.api_sponsored_bucket
+  to   = module.sponsored_dandiset_bucket.aws_iam_user_policy.dandiset_bucket_owner
 }
 
-data "aws_iam_policy_document" "api_sponsored_bucket" {
-  statement {
-    actions = [
-      # TODO Figure out minimal set of permissions django storages needs for S3
-      "s3:*",
-    ]
-    resources = [
-      aws_s3_bucket.sponsored_bucket.arn,
-      "${aws_s3_bucket.sponsored_bucket.arn}/*",
-    ]
-  }
-}
