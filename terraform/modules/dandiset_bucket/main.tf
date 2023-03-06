@@ -112,6 +112,19 @@ data "aws_iam_policy_document" "dandiset_bucket_owner" {
     ]
   }
 
+  dynamic "statement" {
+    for_each = var.allow_heroku_put_object ? [1] : []
+    content {
+
+      resources = [
+        "${aws_s3_bucket.dandiset_bucket.arn}",
+        "${aws_s3_bucket.dandiset_bucket.arn}/*",
+      ]
+
+      actions = ["s3:PutObject"]
+    }
+  }
+
   statement {
     resources = [
       "${aws_s3_bucket.dandiset_bucket.arn}",
@@ -138,6 +151,27 @@ resource "aws_s3_bucket_policy" "dandiset_bucket_policy" {
 
 data "aws_iam_policy_document" "dandiset_bucket_policy" {
   version = "2008-10-17"
+
+  dynamic "statement" {
+    for_each = var.public ? [1] : []
+
+    content {
+      resources = [
+        "${aws_s3_bucket.dandiset_bucket.arn}",
+        "${aws_s3_bucket.dandiset_bucket.arn}/*",
+      ]
+
+      actions = [
+        "s3:Get*",
+        "s3:List*",
+      ]
+
+      principals {
+        identifiers = ["*"]
+        type        = "*"
+      }
+    }
+  }
 
   statement {
     resources = [

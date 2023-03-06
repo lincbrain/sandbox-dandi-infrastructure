@@ -3,9 +3,21 @@
 #   description = "The AWS provider."
 # }
 
+variable "public" {
+  type        = bool
+  description = "Whether or not the contents of the bucket should be public."
+  default     = false
+}
+
 variable "bucket_name" {
   type        = string
   description = "The name of the bucket."
+}
+
+# TODO: remove after migration
+variable "allow_heroku_put_object" {
+  type    = bool
+  default = false
 }
 
 variable "versioning" {
