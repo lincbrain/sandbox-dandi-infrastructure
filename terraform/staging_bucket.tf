@@ -1,174 +1,37 @@
-// TODO use the dandiset_bucket module
-resource "aws_s3_bucket" "api_staging_dandisets_bucket" {
-
-  bucket = "dandi-api-staging-dandisets"
-  // Public access is granted via a bucket policy, not a canned ACL
-  acl = "private"
-
-  cors_rule {
-    allowed_origins = [
-      "*",
-    ]
-    allowed_methods = [
-      "PUT",
-      "POST",
-      "GET",
-      "DELETE",
-    ]
-    allowed_headers = [
-      "*"
-    ]
-    expose_headers = [
-      "ETag",
-    ]
-    max_age_seconds = 3000
-  }
-
-  logging {
-    target_bucket = aws_s3_bucket.api_staging_dandisets_bucket_logs.id
-  }
-
-  versioning {
-    enabled = true
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
+module "staging_dandiset_bucket" {
+  source                  = "./modules/dandiset_bucket"
+  bucket_name             = "dandi-api-staging-dandisets"
+  public                  = true
+  versioning              = true
+  allow_heroku_put_object = true
+  heroku_user             = data.aws_iam_user.api_staging
+  log_bucket_name         = "dandi-api-staging-dandiset-logs"
+  providers = {
+    aws         = aws
+    aws.project = aws
   }
 }
 
-resource "aws_s3_bucket_ownership_controls" "api_staging_dandisets_bucket" {
-  bucket = aws_s3_bucket.api_staging_dandisets_bucket.id
 
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
+
+moved {
+  from = aws_s3_bucket.api_staging_dandisets_bucket
+  to   = module.staging_dandiset_bucket.aws_s3_bucket.dandiset_bucket
 }
 
-resource "aws_s3_bucket" "api_staging_dandisets_bucket_logs" {
-
-  bucket = "dandi-api-staging-dandiset-logs"
-
-  grant {
-    type = "Group"
-    uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
-    permissions = [
-      "READ_ACP",
-      "WRITE",
-    ]
-  }
-  grant {
-    type = "CanonicalUser"
-    id   = data.aws_canonical_user_id.project_account.id
-    permissions = [
-      "FULL_CONTROL",
-    ]
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
+moved {
+  from = aws_s3_bucket_ownership_controls.api_staging_dandisets_bucket
+  to   = module.staging_dandiset_bucket.aws_s3_bucket_ownership_controls.dandiset_bucket
 }
 
-resource "aws_s3_bucket_policy" "api_staging_dandisets_bucket" {
-  bucket = aws_s3_bucket.api_staging_dandisets_bucket.id
-  policy = data.aws_iam_policy_document.api_staging_dandisets_bucket.json
+moved {
+  from = aws_s3_bucket.api_staging_dandisets_bucket_logs
+  to   = module.staging_dandiset_bucket.aws_s3_bucket.log_bucket
 }
 
-data "aws_iam_policy_document" "api_staging_dandisets_bucket" {
-  version = "2008-10-17"
-
-  statement {
-    sid = "dandi-api-staging"
-    principals {
-      type        = "AWS"
-      identifiers = [data.aws_iam_user.api_staging.arn]
-    }
-    actions = [
-      "s3:*",
-    ]
-    resources = [
-      "${aws_s3_bucket.api_staging_dandisets_bucket.arn}/*",
-    ]
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
-    }
-  }
-
-  statement {
-    sid = "dandi-api-staging-delete"
-    principals {
-      type        = "AWS"
-      identifiers = [data.aws_iam_user.api_staging.arn]
-    }
-    actions = [
-      "s3:Delete*",
-    ]
-    resources = [
-      "${aws_s3_bucket.api_staging_dandisets_bucket.arn}/*",
-    ]
-  }
-
-  statement {
-    principals {
-      identifiers = ["*"]
-      type        = "*"
-    }
-    actions = [
-      "s3:List*",
-      "s3:Get*",
-    ]
-    resources = [
-      "${aws_s3_bucket.api_staging_dandisets_bucket.arn}/*",
-      aws_s3_bucket.api_staging_dandisets_bucket.arn,
-    ]
-  }
-
-  statement {
-    sid = "S3PolicyStmt-DO-NOT-MODIFY-1569973164923"
-    principals {
-      identifiers = ["s3.amazonaws.com"]
-      type        = "Service"
-    }
-    actions = [
-      "s3:PutObject",
-    ]
-    resources = [
-      "${aws_s3_bucket.api_staging_dandisets_bucket.arn}/*",
-    ]
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceAccount"
-      values   = [data.aws_caller_identity.project_account.account_id]
-    }
-    condition {
-      test     = "StringEquals"
-      variable = "s3:x-amz-acl"
-      values   = ["bucket-owner-full-control"]
-    }
-    condition {
-      test     = "ArnLike"
-      variable = "aws:SourceArn"
-      values   = [aws_s3_bucket.api_staging_dandisets_bucket.arn]
-    }
-  }
+moved {
+  from = aws_s3_bucket_policy.api_staging_dandisets_bucket
+  to   = module.staging_dandiset_bucket.aws_s3_bucket_policy.dandiset_bucket_policy
 }
 
 module "staging_embargo_bucket" {
