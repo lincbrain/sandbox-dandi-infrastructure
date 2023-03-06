@@ -20,6 +20,13 @@ variable "allow_heroku_put_object" {
   default = false
 }
 
+# TODO: remove after migration
+variable "ownership_policy_name" {
+  type        = string
+  description = "The name of the policy for the IAM user role."
+  default     = ""
+}
+
 variable "versioning" {
   type        = bool
   description = "Whether or not versioning should be enabled on the bucket."
