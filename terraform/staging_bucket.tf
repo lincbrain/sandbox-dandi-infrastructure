@@ -12,28 +12,6 @@ module "staging_dandiset_bucket" {
   }
 }
 
-
-
-moved {
-  from = aws_s3_bucket.api_staging_dandisets_bucket
-  to   = module.staging_dandiset_bucket.aws_s3_bucket.dandiset_bucket
-}
-
-moved {
-  from = aws_s3_bucket_ownership_controls.api_staging_dandisets_bucket
-  to   = module.staging_dandiset_bucket.aws_s3_bucket_ownership_controls.dandiset_bucket
-}
-
-moved {
-  from = aws_s3_bucket.api_staging_dandisets_bucket_logs
-  to   = module.staging_dandiset_bucket.aws_s3_bucket.log_bucket
-}
-
-moved {
-  from = aws_s3_bucket_policy.api_staging_dandisets_bucket
-  to   = module.staging_dandiset_bucket.aws_s3_bucket_policy.dandiset_bucket_policy
-}
-
 module "staging_embargo_bucket" {
   source          = "./modules/dandiset_bucket"
   bucket_name     = "dandi-api-staging-embargo-dandisets"
