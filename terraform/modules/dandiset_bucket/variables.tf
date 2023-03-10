@@ -20,6 +20,12 @@ variable "allow_heroku_put_object" {
   default = false
 }
 
+# TODO: refactor after migration
+variable "allow_cross_account_heroku_put_object" {
+  type    = bool
+  default = false
+}
+
 # TODO: remove after migration
 variable "ownership_policy_name" {
   type        = string
