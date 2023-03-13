@@ -1,5 +1,13 @@
 data "aws_canonical_user_id" "log_bucket_owner_account" {}
 
+data "aws_caller_identity" "sponsored_account" {
+  provider = aws
+}
+
+locals {
+  ownership_policy_name = var.ownership_policy_name == "" ? "${var.bucket_name}-ownership-policy" : var.ownership_policy_name
+}
+
 resource "aws_s3_bucket" "dandiset_bucket" {
 
   bucket = var.bucket_name
@@ -90,7 +98,7 @@ resource "aws_iam_user_policy" "dandiset_bucket_owner" {
   // The Heroku IAM user will always be in the project account
   provider = aws.project
 
-  name = "${var.bucket_name}-ownership-policy"
+  name = local.ownership_policy_name
   user = var.heroku_user.user_name
 
   policy = data.aws_iam_policy_document.dandiset_bucket_owner.json
@@ -169,6 +177,39 @@ data "aws_iam_policy_document" "dandiset_bucket_policy" {
       principals {
         identifiers = ["*"]
         type        = "*"
+      }
+    }
+  }
+
+  dynamic "statement" {
+    for_each = var.allow_cross_account_heroku_put_object ? [1] : []
+
+    content {
+      sid = "S3PolicyStmt-DO-NOT-MODIFY-1569973164923"
+      principals {
+        identifiers = ["s3.amazonaws.com"]
+        type        = "Service"
+      }
+      actions = [
+        "s3:PutObject",
+      ]
+      resources = [
+        "${aws_s3_bucket.dandiset_bucket.arn}/*",
+      ]
+      condition {
+        test     = "StringEquals"
+        variable = "aws:SourceAccount"
+        values   = [data.aws_caller_identity.sponsored_account.account_id]
+      }
+      condition {
+        test     = "StringEquals"
+        variable = "s3:x-amz-acl"
+        values   = ["bucket-owner-full-control"]
+      }
+      condition {
+        test     = "ArnLike"
+        variable = "aws:SourceArn"
+        values   = [aws_s3_bucket.dandiset_bucket.arn]
       }
     }
   }
