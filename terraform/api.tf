@@ -56,9 +56,3 @@ resource "heroku_formation" "api_checksum_worker" {
 data "aws_iam_user" "api" {
   user_name = module.api.heroku_iam_user_id
 }
-
-moved {
-  from = aws_iam_user_policy.api_sponsored_bucket
-  to   = module.sponsored_dandiset_bucket.aws_iam_user_policy.dandiset_bucket_owner
-}
-
