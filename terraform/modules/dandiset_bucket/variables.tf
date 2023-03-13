@@ -1,8 +1,3 @@
-# variable "aws_provider" {
-#   # type        = string //??
-#   description = "The AWS provider."
-# }
-
 variable "public" {
   type        = bool
   description = "Whether or not the contents of the bucket should be public."
