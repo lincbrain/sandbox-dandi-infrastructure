@@ -1,7 +1,6 @@
 module "sponsored_dandiset_bucket" {
   source                                = "./modules/dandiset_bucket"
   bucket_name                           = "dandiarchive"
-  ownership_policy_name                 = "dandi-api-sponsored-bucket"
   public                                = true
   versioning                            = true
   allow_cross_account_heroku_put_object = true
