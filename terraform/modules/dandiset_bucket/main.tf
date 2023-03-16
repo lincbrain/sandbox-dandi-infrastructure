@@ -4,10 +4,6 @@ data "aws_caller_identity" "sponsored_account" {
   provider = aws
 }
 
-locals {
-  ownership_policy_name = var.ownership_policy_name == "" ? "${var.bucket_name}-ownership-policy" : var.ownership_policy_name
-}
-
 resource "aws_s3_bucket" "dandiset_bucket" {
 
   bucket = var.bucket_name
@@ -98,7 +94,7 @@ resource "aws_iam_user_policy" "dandiset_bucket_owner" {
   // The Heroku IAM user will always be in the project account
   provider = aws.project
 
-  name = local.ownership_policy_name
+  name = "${var.bucket_name}-ownership-policy"
   user = var.heroku_user.user_name
 
   policy = data.aws_iam_policy_document.dandiset_bucket_owner.json
