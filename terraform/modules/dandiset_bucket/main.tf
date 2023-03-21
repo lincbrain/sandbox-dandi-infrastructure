@@ -61,6 +61,8 @@ resource "aws_s3_bucket_ownership_controls" "dandiset_bucket" {
 resource "aws_s3_bucket" "log_bucket" {
   bucket = var.log_bucket_name
 
+  # TODO: replace the ACL configuration with a bucket policy
+  # See https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html
   grant {
     type = "Group"
     uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
@@ -88,6 +90,33 @@ resource "aws_s3_bucket" "log_bucket" {
       }
     }
   }
+}
+
+data "aws_iam_policy_document" "dandiset_log_bucket_policy" {
+  statement {
+    resources = [
+      "${aws_s3_bucket.log_bucket.arn}",
+      "${aws_s3_bucket.log_bucket.arn}/*",
+    ]
+
+    actions = [
+      # Needed for the app to process logs for collecting download analytics
+      "s3:GetObject",
+      "s3:ListObjectsV2",
+    ]
+
+    principals {
+      type        = "AWS"
+      identifiers = [var.heroku_user.arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "dandiset_log_bucket_policy" {
+  provider = aws
+
+  bucket = aws_s3_bucket.log_bucket.id
+  policy = data.aws_iam_policy_document.dandiset_log_bucket_policy.json
 }
 
 resource "aws_iam_user_policy" "dandiset_bucket_owner" {
