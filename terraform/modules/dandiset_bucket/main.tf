@@ -95,13 +95,14 @@ resource "aws_s3_bucket" "log_bucket" {
 data "aws_iam_policy_document" "dandiset_log_bucket_policy" {
   statement {
     resources = [
+      "${aws_s3_bucket.log_bucket.arn}",
       "${aws_s3_bucket.log_bucket.arn}/*",
     ]
 
     actions = [
       # Needed for the app to process logs for collecting download analytics
       "s3:GetObject",
-      "s3:ListObjectsV2",
+      "s3:ListBucket",
     ]
 
     principals {
