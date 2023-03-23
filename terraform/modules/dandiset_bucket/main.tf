@@ -95,7 +95,6 @@ resource "aws_s3_bucket" "log_bucket" {
 data "aws_iam_policy_document" "dandiset_log_bucket_policy" {
   statement {
     resources = [
-      "${aws_s3_bucket.log_bucket.arn}",
       "${aws_s3_bucket.log_bucket.arn}/*",
     ]
 
