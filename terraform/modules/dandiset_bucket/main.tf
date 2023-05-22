@@ -4,6 +4,8 @@ data "aws_caller_identity" "sponsored_account" {
   provider = aws
 }
 
+data "aws_caller_identity" "current" {}
+
 resource "aws_s3_bucket" "dandiset_bucket" {
 
   bucket = var.bucket_name
@@ -61,23 +63,7 @@ resource "aws_s3_bucket_ownership_controls" "dandiset_bucket" {
 resource "aws_s3_bucket" "log_bucket" {
   bucket = var.log_bucket_name
 
-  # TODO: replace the ACL configuration with a bucket policy
-  # See https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html
-  grant {
-    type = "Group"
-    uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
-    permissions = [
-      "READ_ACP",
-      "WRITE",
-    ]
-  }
-  grant {
-    type = "CanonicalUser"
-    id   = data.aws_canonical_user_id.log_bucket_owner_account.id
-    permissions = [
-      "FULL_CONTROL",
-    ]
-  }
+
 
   lifecycle {
     prevent_destroy = true
@@ -108,6 +94,30 @@ data "aws_iam_policy_document" "dandiset_log_bucket_policy" {
     principals {
       type        = "AWS"
       identifiers = [var.heroku_user.arn]
+    }
+  }
+
+  statement {
+    sid       = "S3ServerAccessLogsPolicy"
+    effect    = "Allow"
+    resources = ["${aws_s3_bucket.log_bucket.arn}/*"]
+    actions   = ["s3:PutObject"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
+
+    condition {
+      test     = "ArnLike"
+      variable = "aws:SourceArn"
+      values   = [aws_s3_bucket.dandiset_bucket.arn]
+    }
+
+    principals {
+      type        = "Service"
+      identifiers = ["logging.s3.amazonaws.com"]
     }
   }
 }
