@@ -57,7 +57,7 @@ resource "heroku_formation" "api_staging_checksum_worker" {
 resource "heroku_formation" "api_staging_analytics_worker" {
   app      = module.api_staging.heroku_app_id
   type     = "analytics-worker"
-  size     = "standard-1x"
+  size     = "basic"
   quantity = 1
 }
 
