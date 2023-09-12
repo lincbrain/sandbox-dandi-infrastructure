@@ -66,3 +66,31 @@ resource "aws_s3_bucket_policy" "dandiset_log_bucket_policy" {
   bucket = aws_s3_bucket.log_bucket.id
   policy = data.aws_iam_policy_document.dandiset_log_bucket_policy.json
 }
+
+data "aws_iam_policy_document" "dandiset_log_bucket_owner" {
+  version = "2008-10-17"
+
+  // TODO: gate behind a "cross account" flag, since this is technically only
+  // needed for sponsored log bucket.
+  statement {
+    resources = [
+      "${aws_s3_bucket.log_bucket.arn}",
+      "${aws_s3_bucket.log_bucket.arn}/*",
+    ]
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+    ]
+  }
+}
+
+resource "aws_iam_user_policy" "dandiset_log_bucket_owner" {
+  // The Heroku IAM user will always be in the project account
+  provider = aws.project
+
+  name = "${var.log_bucket_name}-ownership-policy"
+  user = var.heroku_user.user_name
+
+  policy = data.aws_iam_policy_document.dandiset_log_bucket_owner.json
+}
