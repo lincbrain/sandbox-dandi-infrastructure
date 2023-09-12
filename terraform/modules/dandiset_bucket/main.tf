@@ -1,5 +1,3 @@
-data "aws_canonical_user_id" "log_bucket_owner_account" {}
-
 data "aws_caller_identity" "sponsored_account" {
   provider = aws
 }
@@ -58,75 +56,6 @@ resource "aws_s3_bucket_ownership_controls" "dandiset_bucket" {
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
-}
-
-resource "aws_s3_bucket" "log_bucket" {
-  bucket = var.log_bucket_name
-
-
-
-  lifecycle {
-    prevent_destroy = true
-  }
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-}
-
-data "aws_iam_policy_document" "dandiset_log_bucket_policy" {
-  statement {
-    resources = [
-      "${aws_s3_bucket.log_bucket.arn}",
-      "${aws_s3_bucket.log_bucket.arn}/*",
-    ]
-
-    actions = [
-      # Needed for the app to process logs for collecting download analytics
-      "s3:GetObject",
-      "s3:ListBucket",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = [var.heroku_user.arn]
-    }
-  }
-
-  statement {
-    sid       = "S3ServerAccessLogsPolicy"
-    effect    = "Allow"
-    resources = ["${aws_s3_bucket.log_bucket.arn}/*"]
-    actions   = ["s3:PutObject"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "aws:SourceAccount"
-      values   = [data.aws_caller_identity.current.account_id]
-    }
-
-    condition {
-      test     = "ArnLike"
-      variable = "aws:SourceArn"
-      values   = [aws_s3_bucket.dandiset_bucket.arn]
-    }
-
-    principals {
-      type        = "Service"
-      identifiers = ["logging.s3.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_s3_bucket_policy" "dandiset_log_bucket_policy" {
-  provider = aws
-
-  bucket = aws_s3_bucket.log_bucket.id
-  policy = data.aws_iam_policy_document.dandiset_log_bucket_policy.json
 }
 
 resource "aws_iam_user_policy" "dandiset_bucket_owner" {
