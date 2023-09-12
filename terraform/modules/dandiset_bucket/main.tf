@@ -236,4 +236,27 @@ data "aws_iam_policy_document" "dandiset_bucket_policy" {
       identifiers = [var.heroku_user.arn]
     }
   }
+
+  dynamic "statement" {
+    for_each = var.trailing_delete ? [1] : []
+
+    content {
+      sid = "PreventDeletionOfObjectVersions"
+
+      resources = [
+        "${aws_s3_bucket.dandiset_bucket.arn}/*"
+      ]
+
+      actions = [
+        "s3:DeleteObjectVersion",
+      ]
+
+      effect = "Deny"
+
+      principals {
+        identifiers = ["*"]
+        type        = "*"
+      }
+    }
+  }
 }
