@@ -260,3 +260,33 @@ data "aws_iam_policy_document" "dandiset_bucket_policy" {
     }
   }
 }
+
+
+# S3 lifecycle policy that permanently deletes objects with delete markers
+# after 30 days.
+resource "aws_s3_bucket_lifecycle_configuration" "expire_deleted_objects" {
+  # Must have bucket versioning enabled first
+  depends_on = [aws_s3_bucket_versioning.dandiset_bucket]
+
+  count = var.trailing_delete ? 1 : 0
+
+  bucket = aws_s3_bucket.dandiset_bucket.id
+
+  # Based on https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-configuration-examples.html#lifecycle-config-conceptual-ex7
+  rule {
+    id = "ExpireOldDeleteMarkers"
+    filter {}
+
+    # Expire objects with delete markers after 30 days
+    noncurrent_version_expiration {
+      noncurrent_days = 30
+    }
+
+    # Also delete any delete markers associated with the expired object
+    expiration {
+      expired_object_delete_marker = true
+    }
+
+    status = "Enabled"
+  }
+}
