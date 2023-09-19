@@ -7,8 +7,24 @@ data "aws_caller_identity" "current" {}
 resource "aws_s3_bucket" "dandiset_bucket" {
 
   bucket = var.bucket_name
-  // Public access is granted via a bucket policy, not a canned ACL
-  acl = "private"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "dandiset_bucket" {
+  bucket = aws_s3_bucket.dandiset_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_cors_configuration" "dandiset_bucket" {
+  bucket = aws_s3_bucket.dandiset_bucket.id
 
   cors_rule {
     allowed_origins = [
@@ -28,25 +44,22 @@ resource "aws_s3_bucket" "dandiset_bucket" {
     ]
     max_age_seconds = 3000
   }
+}
 
-  logging {
-    target_bucket = aws_s3_bucket.log_bucket.id
-  }
+resource "aws_s3_bucket_logging" "dandiset_bucket" {
+  bucket = aws_s3_bucket.dandiset_bucket.id
 
-  versioning {
-    enabled = var.versioning
-  }
+  target_bucket = aws_s3_bucket.log_bucket.id
+  target_prefix = ""
+}
 
-  lifecycle {
-    prevent_destroy = true
-  }
+resource "aws_s3_bucket_versioning" "dandiset_bucket" {
+  count = var.versioning ? 1 : 0
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
+  bucket = aws_s3_bucket.dandiset_bucket.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 
@@ -56,6 +69,15 @@ resource "aws_s3_bucket_ownership_controls" "dandiset_bucket" {
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
+}
+
+resource "aws_s3_bucket_acl" "dandiset_bucket" {
+  depends_on = [aws_s3_bucket_ownership_controls.dandiset_bucket]
+
+  bucket = aws_s3_bucket.dandiset_bucket.id
+
+  // Public access is granted via a bucket policy, not a canned ACL
+  acl = "private"
 }
 
 resource "aws_iam_user_policy" "dandiset_bucket_owner" {

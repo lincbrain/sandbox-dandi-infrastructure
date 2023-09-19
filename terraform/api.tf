@@ -4,7 +4,7 @@ data "heroku_team" "dandi" {
 
 module "api" {
   source  = "girder/girder4/heroku"
-  version = "0.11.0"
+  version = "0.12.0"
 
   project_slug     = "dandi-api"
   heroku_team_name = data.heroku_team.dandi.name
@@ -49,14 +49,14 @@ module "api" {
 }
 
 resource "heroku_formation" "api_checksum_worker" {
-  app      = module.api.heroku_app_id
+  app_id   = module.api.heroku_app_id
   type     = "checksum-worker"
   size     = "standard-2x"
   quantity = 1
 }
 
 resource "heroku_formation" "api_analytics_worker" {
-  app      = module.api.heroku_app_id
+  app_id   = module.api.heroku_app_id
   type     = "analytics-worker"
   size     = "standard-1x"
   quantity = 1
