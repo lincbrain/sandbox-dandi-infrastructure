@@ -4,7 +4,7 @@ data "heroku_team" "dandi" {
 
 module "api" {
   source  = "girder/girder4/heroku"
-  version = "0.12.0"
+  version = "0.13.0"
 
   project_slug     = "dandi-api"
   heroku_team_name = data.heroku_team.dandi.name
