@@ -34,6 +34,7 @@ resource "aws_s3_bucket_cors_configuration" "dandiset_bucket" {
       "PUT",
       "POST",
       "GET",
+      "HEAD",
       "DELETE",
     ]
     allowed_headers = [
