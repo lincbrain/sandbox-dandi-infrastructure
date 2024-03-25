@@ -17,7 +17,7 @@ module "api" {
   heroku_cloudamqp_plan   = "squirrel-1"
   heroku_papertrail_plan  = "liatorp"
 
-  heroku_web_dyno_quantity    = 1
+  heroku_web_dyno_quantity    = 3
   heroku_worker_dyno_quantity = 1
 
   django_default_from_email          = "admin@api.dandiarchive.org"
