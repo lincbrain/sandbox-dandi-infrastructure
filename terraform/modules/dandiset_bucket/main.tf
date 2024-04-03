@@ -167,6 +167,33 @@ data "aws_iam_policy_document" "dandiset_bucket_policy" {
     }
   }
 
+  # Disallow access to embargoed objects, unless using the heroku user arn
+  dynamic "statement" {
+    for_each = var.public ? [1] : []
+
+    content {
+      effect = "Deny"
+      principals {
+        identifiers = ["*"]
+        type        = "*"
+      }
+      actions = ["s3:*"]
+      resources = [
+        "${aws_s3_bucket.dandiset_bucket.arn}/*",
+      ]
+      condition {
+        test     = "StringEquals"
+        variable = "s3:ExistingObjectTag/embargoed"
+        values   = ["true"]
+      }
+      condition {
+        test     = "ArnNotEquals"
+        variable = "aws:PrincipalArn"
+        values   = [var.heroku_user.arn]
+      }
+    }
+  }
+
   dynamic "statement" {
     for_each = var.allow_cross_account_heroku_put_object ? [1] : []
 
