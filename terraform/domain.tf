@@ -7,7 +7,7 @@ resource "aws_route53_record" "acm_validation" {
   name    = "_cbe41dfe1888c2bb5c157cacc35e1722"
   type    = "CNAME"
   ttl     = "300"
-  records = ["_46df7ee9a9c17698aedbb737f220c63a.mzlfeqexyx.acm-validations.aws."]
+  records = ["_46df7ee9a9c17698aedbb737f220c63a.mzlfeqexyx.acm-validations.aws"]
 }
 
 resource "aws_route53_record" "gui" {
