@@ -42,6 +42,7 @@ module "api" {
     DJANGO_DANDI_WEB_APP_URL                       = "https://dandiarchive.org"
     DJANGO_DANDI_API_URL                           = "https://api.dandiarchive.org"
     DJANGO_DANDI_JUPYTERHUB_URL                    = "https://hub.dandiarchive.org/"
+    DJANGO_DANDI_DEV_EMAIL                         = var.dev_email
   }
   additional_sensitive_django_vars = {
     DJANGO_DANDI_DOI_API_PASSWORD = var.doi_api_password

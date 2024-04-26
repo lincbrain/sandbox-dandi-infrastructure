@@ -7,3 +7,8 @@ variable "test_doi_api_password" {
   type        = string
   description = "The password for the Datacite Test API, used to mint new DOIs on staging during publish."
 }
+
+variable "dev_email" {
+  type        = string
+  description = "The core developer email list."
+}
