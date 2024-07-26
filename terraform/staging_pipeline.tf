@@ -12,7 +12,7 @@ module "api_staging" {
 
   heroku_web_dyno_size    = "basic"
   heroku_worker_dyno_size = "basic"
-  heroku_postgresql_plan  = "basic"
+  heroku_postgresql_plan  = "essential-1"
   heroku_cloudamqp_plan   = "tiger"
   heroku_papertrail_plan  = "fixa"
 
