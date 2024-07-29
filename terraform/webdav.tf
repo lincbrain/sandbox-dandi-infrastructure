@@ -18,7 +18,7 @@ resource "heroku_app" "webdav" {
 resource "heroku_formation" "webdav_heroku_web" {
   app_id   = heroku_app.webdav.id
   type     = "web"
-  size     = "basic"
+  size     = "standard-2x"
   quantity = 1
 }
 
