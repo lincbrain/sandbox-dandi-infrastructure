@@ -66,8 +66,8 @@ data "aws_iam_user" "api_staging" {
   user_name = module.api_staging.heroku_iam_user_id
 }
 
-resource "heroku_pipeline" "dandi_pipeline" {
-  name = "dandi-pipeline"
+resource "heroku_pipeline" "sandbox-dandi-pipeline" {
+  name = "sandbox-dandi-pipeline"
 
   owner {
     id   = data.heroku_team.linc-brain-mit.id
@@ -77,12 +77,12 @@ resource "heroku_pipeline" "dandi_pipeline" {
 
 resource "heroku_pipeline_coupling" "staging" {
   app_id   = module.api_staging.heroku_app_id
-  pipeline = heroku_pipeline.dandi_pipeline.id
+  pipeline = heroku_pipeline.sandbox-dandi-pipeline.id
   stage    = "staging"
 }
 
 resource "heroku_pipeline_coupling" "production" {
   app_id   = module.api.heroku_app_id
-  pipeline = heroku_pipeline.dandi_pipeline.id
+  pipeline = heroku_pipeline.sandbox-dandi-pipeline.id
   stage    = "production"
 }
