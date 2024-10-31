@@ -1,18 +1,18 @@
-data "sentry_organization" "this" {
-  slug = "dandiarchive"
-}
-
-data "sentry_team" "this" {
-  organization = data.sentry_organization.this.id
-  slug         = "dandidevs"
-}
-
-data "sentry_project" "this" {
-  organization = data.sentry_organization.this.id
-  slug         = "dandi-api"
-}
-
-data "sentry_key" "this" {
-  organization = data.sentry_organization.this.id
-  project      = data.sentry_project.this.id
-}
+# data "sentry_organization" "this" {
+#   slug = "mit"
+# }
+#
+# data "sentry_team" "this" {
+#   organization = data.sentry_organization.this.id
+#   slug         = "mit"
+# }
+#
+# data "sentry_project" "this" {
+#   organization = data.sentry_organization.this.id
+#   slug         = "sandbox-dandi"
+# }
+#
+# data "sentry_key" "this" {
+#   organization = data.sentry_organization.this.id
+#   project      = data.sentry_project.this.id
+# }
