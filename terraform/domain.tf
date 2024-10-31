@@ -1,5 +1,5 @@
 resource "aws_route53_zone" "dandi" {
-  name = "dandiarchive.org"
+  name = "sandbox-dandi.org"
 }
 
 resource "aws_route53_record" "acm_validation" {
@@ -23,7 +23,7 @@ resource "aws_route53_record" "gui-staging" {
   name    = "gui-staging"
   type    = "CNAME"
   ttl     = "300"
-  records = ["gui-staging-dandiarchive-org.netlify.com"]
+  records = ["gui-staging-sandbox-dandi-org.netlify.com"]
 }
 
 resource "aws_route53_record" "www" {
@@ -31,7 +31,7 @@ resource "aws_route53_record" "www" {
   name    = "www"
   type    = "CNAME"
   ttl     = "300"
-  records = ["dandi.github.io"]
+  records = ["sandbox-dandi.github.io"]
 }
 
 resource "aws_route53_record" "email" {

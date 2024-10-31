@@ -5,7 +5,7 @@ module "api_staging" {
   source  = "girder/girder4/heroku"
   version = "0.13.0"
 
-  project_slug     = "dandi-api-staging"
+  project_slug     = "sandbox-dandi-api-staging"
   heroku_team_name = data.heroku_team.dandi.name
   route53_zone_id  = aws_route53_zone.dandi.zone_id
   subdomain_name   = "api-staging"
@@ -19,9 +19,9 @@ module "api_staging" {
   heroku_web_dyno_quantity    = 1
   heroku_worker_dyno_quantity = 1
 
-  django_default_from_email          = "admin@api-staging.dandiarchive.org"
-  django_cors_origin_whitelist       = ["https://gui-staging.dandiarchive.org"]
-  django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-staging-dandiarchive-org\\.netlify\\.app$"]
+  django_default_from_email          = "admin@api-staging.sandbox-dandi.org"
+  django_cors_origin_whitelist       = ["https://gui-staging.sandbox-dandi.org"]
+  django_cors_origin_regex_whitelist = ["^https:\\/\\/[0-9a-z\\-]+--gui-staging-sandbox-dandi-org\\.netlify\\.app$"]
 
   additional_django_vars = {
     DJANGO_CONFIGURATION                           = "HerokuStagingConfiguration"
@@ -38,9 +38,9 @@ module "api_staging" {
     DJANGO_SENTRY_DSN                              = data.sentry_key.this.dsn_public
     DJANGO_SENTRY_ENVIRONMENT                      = "staging"
     DJANGO_CELERY_WORKER_CONCURRENCY               = "2"
-    DJANGO_DANDI_WEB_APP_URL                       = "https://gui-staging.dandiarchive.org"
-    DJANGO_DANDI_API_URL                           = "https://api-staging.dandiarchive.org"
-    DJANGO_DANDI_JUPYTERHUB_URL                    = "https://hub.dandiarchive.org/"
+    DJANGO_DANDI_WEB_APP_URL                       = "https://gui-staging.sandbox-dandi.org"
+    DJANGO_DANDI_API_URL                           = "https://api-staging.sandbox-dandi.org"
+    DJANGO_DANDI_JUPYTERHUB_URL                    = "https://hub.sandbox-dandi.org/"
     DJANGO_DANDI_DEV_EMAIL                         = var.dev_email
   }
   additional_sensitive_django_vars = {
