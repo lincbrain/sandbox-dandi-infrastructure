@@ -1,5 +1,5 @@
 data "sentry_organization" "this" {
-  slug = "mit-m3"
+  slug = "mit"
 }
 
 data "sentry_team" "this" {
