@@ -1,15 +1,15 @@
 data "sentry_organization" "this" {
-  slug = "sandbox-dandi"
+  slug = "mit-m3"
 }
 
 data "sentry_team" "this" {
   organization = data.sentry_organization.this.id
-  slug         = "sandbox-dandi-devs"
+  slug         = "mit"
 }
 
 data "sentry_project" "this" {
   organization = data.sentry_organization.this.id
-  slug         = "sandbox-dandi-api"
+  slug         = "sandbox-dandi"
 }
 
 data "sentry_key" "this" {

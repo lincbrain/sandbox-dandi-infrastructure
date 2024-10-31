@@ -1,5 +1,5 @@
-data "heroku_team" "dandi" {
-  name = "sandbox-dandi"
+data "heroku_team" "linc-brain-mit" {
+  name = "linc-brain-mit"
 }
 
 module "api" {
