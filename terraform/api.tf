@@ -7,7 +7,7 @@ module "api" {
   version = "0.13.0"
 
   project_slug     = "sandbox-dandi-api"
-  heroku_team_name = data.heroku_team.dandi.name
+  heroku_team_name = data.heroku_team.linc-brain-mit.name
   route53_zone_id  = aws_route53_zone.dandi.zone_id
   subdomain_name   = "api"
 
