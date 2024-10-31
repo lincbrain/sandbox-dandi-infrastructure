@@ -11,8 +11,8 @@ terraform {
     local = {
       source = "hashicorp/local"
     }
-    sentry = {
-      source = "jianyuan/sentry"
-    }
+#     sentry = {
+#       source = "jianyuan/sentry"
+#     }
   }
 }

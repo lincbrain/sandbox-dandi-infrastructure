@@ -34,9 +34,9 @@ provider "heroku" {
   # Must set HEROKU_EMAIL, HEROKU_API_KEY envvars
 }
 
-provider "sentry" {
-  # Must set SENTRY_AUTH_TOKEN envvar
-}
+# provider "sentry" {
+#   # Must set SENTRY_AUTH_TOKEN envvar
+# }
 
 data "aws_canonical_user_id" "project_account" {}
 
