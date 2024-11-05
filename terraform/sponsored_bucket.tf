@@ -1,4 +1,4 @@
-module "sponsored_dandiset_bucket" {
+module "dandiset_bucket" {
   source                                = "./modules/dandiset_bucket"
   bucket_name                           = "dandiarchive"
   public                                = true
@@ -8,20 +8,21 @@ module "sponsored_dandiset_bucket" {
   heroku_user                           = data.aws_iam_user.api
   log_bucket_name                       = "dandiarchive-logs"
   providers = {
-    aws         = aws.sponsored
+    aws         = aws
     aws.project = aws
   }
 }
 
-module "sponsored_embargo_bucket" {
-  source          = "./modules/dandiset_bucket"
-  bucket_name     = "dandiarchive-embargo"
-  versioning      = false
-  trailing_delete = false
-  heroku_user     = data.aws_iam_user.api
-  log_bucket_name = "dandiarchive-embargo-logs"
-  providers = {
-    aws         = aws.sponsored
-    aws.project = aws
-  }
-}
+
+# module "sponsored_embargo_bucket" {
+#   source          = "./modules/dandiset_bucket"
+#   bucket_name     = "dandiarchive-embargo"
+#   versioning      = false
+#   trailing_delete = false
+#   heroku_user     = data.aws_iam_user.api
+#   log_bucket_name = "dandiarchive-embargo-logs"
+#   providers = {
+#     aws         = aws.sponsored
+#     aws.project = aws
+#   }
+# }
