@@ -8,7 +8,7 @@ module "dandiset_bucket" {
   heroku_user                           = data.aws_iam_user.api
   log_bucket_name                       = "dandiarchive-logs"
   providers = {
-    aws         = aws.sponsored
+    aws         = aws
     aws.project = aws
   }
 }
