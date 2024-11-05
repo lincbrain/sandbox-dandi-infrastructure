@@ -26,17 +26,17 @@ module "api" {
 
   additional_django_vars = {
     DJANGO_CONFIGURATION                           = "HerokuProductionConfiguration"
-#     DJANGO_DANDI_DANDISETS_BUCKET_NAME             = module.sponsored_dandiset_bucket.bucket_name
-    DJANGO_DANDI_DANDISETS_BUCKET_PREFIX           = ""
-#     DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME     = module.sponsored_embargo_bucket.bucket_name
-    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_PREFIX   = ""
-#     DJANGO_DANDI_DANDISETS_LOG_BUCKET_NAME         = module.sponsored_dandiset_bucket.log_bucket_name
-#     DJANGO_DANDI_DANDISETS_EMBARGO_LOG_BUCKET_NAME = module.sponsored_embargo_bucket.log_bucket_name
+    DJANGO_DANDI_DANDISETS_BUCKET_NAME             = module.dandiset_bucket.bucket_name
+    DJANGO_DANDI_DANDISETS_BUCKET_PREFIX           = "temp_bucket_prefix"
+    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_NAME     = module.dandiset_bucket.bucket_name
+    DJANGO_DANDI_DANDISETS_EMBARGO_BUCKET_PREFIX   = "temp_bucket_embargo_prefix"
+    DJANGO_DANDI_DANDISETS_LOG_BUCKET_NAME         = module.dandiset_bucket.log_bucket_name
+    DJANGO_DANDI_DANDISETS_EMBARGO_LOG_BUCKET_NAME = module.dandiset_bucket.log_bucket_name
     DJANGO_DANDI_DOI_API_URL                       = "https://api.datacite.org/dois"
     DJANGO_DANDI_DOI_API_USER                      = "dartlib.dandi"
     DJANGO_DANDI_DOI_API_PREFIX                    = "10.48324"
     DJANGO_DANDI_DOI_PUBLISH                       = "true"
-#     DJANGO_SENTRY_DSN                              = data.sentry_key.this.dsn_public
+    DJANGO_SENTRY_DSN                              = "temp_key"
     DJANGO_SENTRY_ENVIRONMENT                      = "production"
     DJANGO_CELERY_WORKER_CONCURRENCY               = "4"
     DJANGO_DANDI_WEB_APP_URL                       = "https://dandiarchive.org"
@@ -49,6 +49,7 @@ module "api" {
   }
 }
 
+# Launched upon first deployment of the DANDI Archive via the Heroku build:create command in GitHub Actions CI
 resource "heroku_formation" "api_checksum_worker" {
   app_id   = module.api.heroku_app_id
   type     = "checksum-worker"
