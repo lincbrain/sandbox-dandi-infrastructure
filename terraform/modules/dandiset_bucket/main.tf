@@ -72,14 +72,14 @@ resource "aws_s3_bucket_ownership_controls" "dandiset_bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "dandiset_bucket" {
-  depends_on = [aws_s3_bucket_ownership_controls.dandiset_bucket]
-
-  bucket = aws_s3_bucket.dandiset_bucket.id
-
-  // Public access is granted via a bucket policy, not a canned ACL
-  acl = "private"
-}
+# resource "aws_s3_bucket_acl" "dandiset_bucket" {
+#   depends_on = [aws_s3_bucket_ownership_controls.dandiset_bucket]
+#
+#   bucket = aws_s3_bucket.dandiset_bucket.id
+#
+#   // Public access is granted via a bucket policy, not a canned ACL
+#   acl = "private"
+# }
 
 resource "aws_iam_user_policy" "dandiset_bucket_owner" {
   // The Heroku IAM user will always be in the project account
@@ -136,12 +136,12 @@ data "aws_iam_policy_document" "dandiset_bucket_owner" {
   }
 }
 
-resource "aws_s3_bucket_policy" "dandiset_bucket_policy" {
-  provider = aws
-
-  bucket = aws_s3_bucket.dandiset_bucket.id
-  policy = data.aws_iam_policy_document.dandiset_bucket_policy.json
-}
+# resource "aws_s3_bucket_policy" "dandiset_bucket_policy" {
+#   provider = aws
+#
+#   bucket = aws_s3_bucket.dandiset_bucket.id
+#   policy = data.aws_iam_policy_document.dandiset_bucket_policy.json
+# }
 
 data "aws_iam_policy_document" "dandiset_bucket_policy" {
   version = "2008-10-17"
